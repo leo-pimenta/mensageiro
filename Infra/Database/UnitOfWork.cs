@@ -26,6 +26,26 @@ namespace Infra.Database
             }
         }
 
+        public async Task<TResult> ExecuteAsync<TResult>(Func<MsgContext, Task<TResult>> callback)
+        {
+            using (var context = CreateContext())
+            {
+                TResult result = await callback(context);
+                await context.SaveChangesAsync();
+                return result;
+            }
+        }
+
+        public async Task<TResult> ExecuteAsync<TResult>(Func<MsgContext, TResult> callback)
+        {
+            using (var context = CreateContext())
+            {
+                TResult result = callback(context);
+                await context.SaveChangesAsync();
+                return result;
+            }
+        }
+
         private MsgContext CreateContext() => new MsgContext(this.Configuration, this.Encryptor);
     }
 }
