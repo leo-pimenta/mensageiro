@@ -5,6 +5,7 @@ using App.Factories;
 using App.Services;
 using Domain;
 using Infra.Database;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -37,6 +38,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateUser(CreateUserDto dto)
         {
             User user = this.UserFactory.Create(dto);

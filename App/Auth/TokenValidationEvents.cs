@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
 
 namespace App.Auth
 {
@@ -9,12 +8,14 @@ namespace App.Auth
     {
         public Task OnMessageReceived(MessageReceivedContext context)
         {
-            StringValues accessToken = context.Request.Query["access_token"];
+            string accessTokenQuery = context.Request.Query["access_token"];
+            string accessTokenHeader = context.Request.Headers["Authorization"];
+            string accessToken = accessTokenHeader ?? accessTokenQuery;
             PathString path = context.HttpContext.Request.Path;
 
-            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
+            if (path.StartsWithSegments("/chat") && !string.IsNullOrEmpty(accessToken))
             {
-                context.Token = accessToken;
+                context.Token = accessToken.Replace("Bearer ", "");
             }
 
             return Task.CompletedTask;

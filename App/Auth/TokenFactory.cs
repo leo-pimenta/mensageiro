@@ -27,11 +27,18 @@ namespace App.Auth
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 IssuedAt = DateTime.UtcNow,
                 Issuer = issuer,
-                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature),
+                Subject = CreateIdentityClaim(user)
             };
 
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+        private ClaimsIdentity CreateIdentityClaim(User user)
+            => new ClaimsIdentity(new Claim[] 
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Guid.ToString()),                
+        });
     }
 }
