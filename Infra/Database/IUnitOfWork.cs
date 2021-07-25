@@ -6,8 +6,8 @@ namespace Infra.Database
 {
     public interface IUnitOfWork
     {
-        Task ExecuteAsync(Action<MsgContext> callback);
         Task<TResult> ExecuteAsync<TResult>(Func<MsgContext, Task<TResult>> callback);
-        Task<TResult> ExecuteAsync<TResult>(Func<MsgContext, TResult> callback);
+        Task ExecuteAsync(Func<MsgContext, Task> callback);
+        TResult Execute<TResult>(Func<MsgContext, TResult> callback);
     }
 }

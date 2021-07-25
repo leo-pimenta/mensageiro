@@ -4,6 +4,7 @@ using App.Auth;
 using App.Factories;
 using App.Services;
 using App.WebSockets;
+using Confluent.Kafka;
 using Infra.Cryptography;
 using Infra.Database;
 using Infra.Database.Model;
@@ -88,6 +89,7 @@ namespace App
             services.AddSingleton<IEncryptor, Encryptor>();
             services.AddSingleton<MsgContext>(); // do not use, only for .net internal uses
             services.AddSingleton<ITokenFactory, TokenFactory>();
+            InjectMessageService(services);
             
             services.AddSingleton<IUnitOfWork>(services 
                 => new EntityFrameworkUnitOfWork(this.Configuration, services.GetService<IEncryptor>()));
@@ -97,6 +99,40 @@ namespace App
                     services.GetService<IUnitOfWork>(), 
                     new BCryptPasswordHashing(),
                     services.GetService<IUserAccountFactory>()));
+        }
+
+        private void InjectMessageService(IServiceCollection services)
+        {
+            var producerConfig = new ProducerConfig()
+            {
+                BootstrapServers = this.Configuration["kafka:server"],
+                ClientId = this.Configuration["kafka:clientid"]
+            };
+
+            var consumerConfig = new ConsumerConfig()
+            {
+                BootstrapServers = this.Configuration["kafka:server"],
+                AutoOffsetReset = AutoOffsetReset.Earliest,
+                ClientId = this.Configuration["kafka:clientid"],
+                
+                // TODO verify how to have many instances receiving data from same topics (different group id?)
+                GroupId = "mensageiro"
+            };
+
+            var producer = new ProducerBuilder<Guid, string>(producerConfig)
+                .SetKeySerializer(new GuidSerializer())
+                .Build();
+
+            var consumer = new ConsumerBuilder<Guid, string>(consumerConfig)
+                .SetKeyDeserializer(new GuidDeserializer())
+                .Build();
+
+            services.AddSingleton<IMessageService>(provider
+                => new KafkaService(
+                    consumer, 
+                    producer, 
+                    provider.GetService<IConfiguration>(), 
+                    provider.GetService<IUserService>()));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

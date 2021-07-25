@@ -17,11 +17,21 @@ namespace Infra.Database
             this.Encryptor = encryptor;
         }
 
-        public async Task ExecuteAsync(Action<MsgContext> callback)
+        public TResult Execute<TResult>(Func<MsgContext, TResult> callback)
         {
             using (var context = CreateContext())
             {
-                callback(context);
+                TResult result = callback(context);
+                context.SaveChanges();
+                return result;
+            }
+        }
+
+        public async Task ExecuteAsync(Func<MsgContext, Task> callback)
+        {
+            using (var context = CreateContext())
+            {
+                await callback(context);
                 await context.SaveChangesAsync();
             }
         }
@@ -31,16 +41,6 @@ namespace Infra.Database
             using (var context = CreateContext())
             {
                 TResult result = await callback(context);
-                await context.SaveChangesAsync();
-                return result;
-            }
-        }
-
-        public async Task<TResult> ExecuteAsync<TResult>(Func<MsgContext, TResult> callback)
-        {
-            using (var context = CreateContext())
-            {
-                TResult result = callback(context);
                 await context.SaveChangesAsync();
                 return result;
             }

@@ -25,17 +25,16 @@ namespace App.Services
             this.UserAccountFactory = userAccountFactory;
         }
 
+        public User GetUser(Guid guid)
+            => this.UnitOfWork.Execute(context => context.Users.Find(guid));
+
         public async Task<User> GetUserAsync(Guid guid)
-        {
-            return await this.UnitOfWork.ExecuteAsync(async context => 
+            => await this.UnitOfWork.ExecuteAsync(async context => 
                 await context.Users.FindAsync(guid));
-        }
 
         public async Task<User> GetUserAsync(string email)
-        {
-            return await this.UnitOfWork.ExecuteAsync(async context => 
+            => await this.UnitOfWork.ExecuteAsync(async context => 
                 await context.Users.FirstOrDefaultAsync(user => user.Email == email));
-        }
 
         public async Task<bool> ValidateLogin(User user, string password)
         {
@@ -49,10 +48,10 @@ namespace App.Services
         {
             UserAccount account = this.UserAccountFactory.Create(user, password, this.PasswordHashing);
             
-            await this.UnitOfWork.ExecuteAsync(context => 
+            await this.UnitOfWork.ExecuteAsync(async context => 
             {
-                context.Users.Add(user);
-                context.UserAccounts.Add(account);
+                await context.Users.AddAsync(user);
+                await context.UserAccounts.AddAsync(account);
             });
         }
     }
