@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -89,7 +90,10 @@ namespace App
             services.AddSingleton<IEncryptor, Encryptor>();
             services.AddSingleton<MsgContext>(); // do not use, only for .net internal uses
             services.AddSingleton<ITokenFactory, TokenFactory>();
-            InjectMessageService(services);
+            services.AddSingleton<ISendCommand, SignalRSendCommand>();
+            
+            InjectMessageReader(services);
+            InjectMessageWriter(services);
             
             services.AddSingleton<IUnitOfWork>(services 
                 => new EntityFrameworkUnitOfWork(this.Configuration, services.GetService<IEncryptor>()));
@@ -101,35 +105,52 @@ namespace App
                     services.GetService<IUserAccountFactory>()));
         }
 
-        private void InjectMessageService(IServiceCollection services)
+        private void InjectMessageReader(IServiceCollection services)
         {
-            var producerConfig = new ProducerConfig()
+            var consumer = new ConsumerBuilder<Guid, string>(new ConsumerConfig()
+                {
+                    BootstrapServers = this.Configuration["kafka:server"],
+                    AutoOffsetReset = AutoOffsetReset.Earliest,
+                    ClientId = this.Configuration["kafka:clientid"],
+                    
+                    // TODO verify how to have many instances receiving data from same topics (different group id?)
+                    GroupId = "mensageiro"
+                })
+                .SetKeyDeserializer(new GuidDeserializer())
+                .Build();
+            
+            services.AddSingleton<IMessageReader>(provider => 
             {
-                BootstrapServers = this.Configuration["kafka:server"],
-                ClientId = this.Configuration["kafka:clientid"]
-            };
+                var kafkaReader = new KafkaReader(
+                    consumer, 
+                    provider.GetService<IUserService>(),
+                    provider.GetService<ISendCommand>());
 
-            var consumerConfig = new ConsumerConfig()
-            {
-                BootstrapServers = this.Configuration["kafka:server"],
-                AutoOffsetReset = AutoOffsetReset.Earliest,
-                ClientId = this.Configuration["kafka:clientid"],
-                
-                // TODO verify how to have many instances receiving data from same topics (different group id?)
-                GroupId = "mensageiro"
-            };
+                kafkaReader.Start();
+                return kafkaReader;
+            });
+        }
 
-            var producer = new ProducerBuilder<Guid, string>(producerConfig)
+        private void InjectMessageWriter(IServiceCollection services)
+        {
+            var producer = new ProducerBuilder<Guid, string>(new ProducerConfig()
+                {
+                    BootstrapServers = this.Configuration["kafka:server"],
+                    ClientId = this.Configuration["kafka:clientid"]
+                })
                 .SetKeySerializer(new GuidSerializer())
                 .Build();
 
-            var consumer = new ConsumerBuilder<Guid, string>(consumerConfig)
-                .SetKeyDeserializer(new GuidDeserializer())
+            IAdminClient admin = new AdminClientBuilder(new AdminClientConfig()
+                {
+                    ClientId = this.Configuration["kafka:clientid"],
+                    BootstrapServers = this.Configuration["kafka:server"]
+                })
                 .Build();
-
-            services.AddSingleton<IMessageService>(provider
-                => new KafkaService(
-                    consumer, 
+            
+            services.AddSingleton<IMessageWriter>(provider => 
+                new KafkaWriter(
+                    admin,
                     producer, 
                     provider.GetService<IConfiguration>(), 
                     provider.GetService<IUserService>()));
@@ -169,10 +190,10 @@ namespace App
         private void ConfigureCors(IApplicationBuilder app)
         {
             app.UseCors(options =>
-                            options.AllowAnyMethod()
-                                .AllowAnyHeader()
-                                .SetIsOriginAllowed(origin => true)
-                                .AllowCredentials());
+                options.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(origin => true)
+                    .AllowCredentials());
         }
 
         private void MigrateUp()

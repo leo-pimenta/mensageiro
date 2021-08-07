@@ -13,13 +13,14 @@ namespace App.WebSockets
     public class ChatHub : Hub
     {
         private readonly IUserService UserService;
-        private readonly IMessageService MessageService;
+        private readonly IMessageWriter MessageWriter;
+        private readonly IMessageReader MessageReader;
 
-        public ChatHub(IUserService userService, IMessageService messageService)
+        public ChatHub(IUserService userService, IMessageWriter messageWriter, IMessageReader messageReader)
         {
             this.UserService = userService;
-            this.MessageService = messageService;
-            this.MessageService.OnMessagesReceivedAsync += OnMessageReceivedAsync;
+            this.MessageWriter = messageWriter;
+            this.MessageReader = messageReader;
         }        
 
         public async Task Send(string toUserIdentifier, string text)
@@ -31,10 +32,7 @@ namespace App.WebSockets
             ValidateUser(userTo);
 
             // TODO change SentAt to come from client?
-            var message = new Message() { User = userFrom, Text = text, SentAt = DateTime.Now };
-            string jsonMessage = JsonSerializer.Serialize(message);
-            
-            await Clients.User(userTo.Guid.ToString()).SendAsync("OnMessage", jsonMessage);
+            this.MessageWriter.Insert(userFrom, userTo, text, DateTime.Now);
         }
 
         public void ValidateUser(User user)
@@ -47,26 +45,14 @@ namespace App.WebSockets
 
         public override Task OnConnectedAsync()
         {
-            this.MessageService.Subscribe(this.Context.UserIdentifier);
+            this.MessageReader.Subscribe(this.Context.UserIdentifier);
             return Task.CompletedTask;
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
-            this.MessageService.Unsubscribe(this.Context.UserIdentifier);
+            this.MessageReader.Unsubscribe(this.Context.UserIdentifier);
             return Task.CompletedTask;
-        }
-
-        private async Task OnMessageReceivedAsync(Guid userIdentifier, MessageProxy messageProxy)
-        {
-            IClientProxy client = this.Clients.User(userIdentifier.ToString());
-
-            if (client != null)
-            {
-                Message message = await messageProxy.RequestAsync();
-                string json = JsonSerializer.Serialize(message);
-                await client.SendAsync("OnMessage", json);
-            }
         }
     }
 }
