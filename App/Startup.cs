@@ -193,7 +193,8 @@ namespace App
                 options.AllowAnyMethod()
                     .AllowAnyHeader()
                     .SetIsOriginAllowed(origin => true)
-                    .AllowCredentials());
+                    .AllowCredentials()
+                    .WithOrigins(this.Configuration.GetArray("cors:origins")));
         }
 
         private void MigrateUp()
