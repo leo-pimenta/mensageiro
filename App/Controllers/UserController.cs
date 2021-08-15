@@ -38,7 +38,6 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateUser(CreateUserDto dto)
         {
             User user = this.UserFactory.Create(dto);
@@ -57,7 +56,12 @@ namespace App.Controllers
             }
 
             string token = this.TokenFactory.Create(user);
-            return Ok(this.ResponseFactory.Create(new { accessToken = token }));
+            
+            return Ok(this.ResponseFactory.Create(new 
+            { 
+                nickName = user.Nickname,
+                accessToken = token 
+            }));
         }
     }
 }

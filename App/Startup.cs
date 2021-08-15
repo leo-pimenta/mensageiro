@@ -84,25 +84,31 @@ namespace App
 
         private void InjectDependencies(IServiceCollection services)
         {
+            services.AddSingleton<IEncryptor, Encryptor>();
+
+            services.AddSingleton<IUnitOfWork>(services 
+                => new EntityFrameworkUnitOfWork(this.Configuration, 
+                    services.GetService<IEncryptor>()));
+            
             services.AddSingleton<IResponseFactory, ResponseFactory>();
             services.AddSingleton<IUserFactory, UserFactory>();
             services.AddSingleton<IUserAccountFactory, UserAccountFactory>();
-            services.AddSingleton<IEncryptor, Encryptor>();
+            services.AddSingleton<IContactFactory, ContactFactory>();
+            services.AddSingleton<IContactInvitationFactory, ContactInvitationFactory>();
             services.AddSingleton<MsgContext>(); // do not use, only for .net internal uses
             services.AddSingleton<ITokenFactory, TokenFactory>();
             services.AddSingleton<ISendCommand, SignalRSendCommand>();
             
             InjectMessageReader(services);
             InjectMessageWriter(services);
-            
-            services.AddSingleton<IUnitOfWork>(services 
-                => new EntityFrameworkUnitOfWork(this.Configuration, services.GetService<IEncryptor>()));
 
             services.AddSingleton<IUserService>(services 
                 => new UserService(
                     services.GetService<IUnitOfWork>(), 
                     new BCryptPasswordHashing(),
                     services.GetService<IUserAccountFactory>()));
+            
+            services.AddSingleton<IContactService, ContactService>();
         }
 
         private void InjectMessageReader(IServiceCollection services)
