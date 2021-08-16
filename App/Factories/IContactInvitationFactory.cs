@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using App.Dtos;
 using Domain;
+using Infra.Database.Model;
 
 namespace App.Factories
 {

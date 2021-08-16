@@ -7,5 +7,6 @@ namespace App.Factories
     public interface IContactFactory
     {
         Task<Contact> CreateAsync(ContactInvitationDto dto);
+        ContactDto CreateDto(Contact contact);
     }
 }

@@ -47,13 +47,13 @@ namespace Infra.Database.Model
                 
                 entity.HasOne(invitation => invitation.InvitedUser)
                     .WithMany()
-                    .HasForeignKey(invitation => invitation.InvitedUser.Guid)
+                    .HasForeignKey(invitation => invitation.InvitedUserGuid)
                     .HasConstraintName("inviteduserguid")
                     .IsRequired();
 
                 entity.HasOne(invitation => invitation.User)
                     .WithMany()
-                    .HasForeignKey(invitation => invitation.User.Guid)
+                    .HasForeignKey(invitation => invitation.UserGuid)
                     .HasConstraintName("userguid")
                     .IsRequired();
             });
@@ -76,17 +76,20 @@ namespace Infra.Database.Model
                 
                 entity.HasOne(contact => contact.User)
                     .WithOne()
-                    .HasForeignKey<Contact>("userguid")
+                    .HasForeignKey<Contact>(contact => contact.UserGuid)
+                    .HasConstraintName("userguid")
                     .IsRequired();
 
                 entity.HasOne(contact => contact.ContactUser)
                     .WithOne()
-                    .HasForeignKey<Contact>("contactuserguid")
+                    .HasForeignKey<Contact>(contact => contact.ContactUserGuid)
+                    .HasConstraintName("contactuserguid")
                     .IsRequired();
 
                 entity.HasOne(contact => contact.Block)
                     .WithOne()
-                    .HasForeignKey<Contact>("blockguid")
+                    .HasForeignKey<Contact>(contact => contact.BlockGuid)
+                    .HasConstraintName("blockguid")
                     .IsRequired(false);
             });
         }

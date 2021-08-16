@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using App.Dtos;
 using App.Services;
 using Domain;
-using Infra.Database;
 
 namespace App.Factories
 {
@@ -24,6 +23,23 @@ namespace App.Factories
             {
                 User = user,
                 ContactUser = contactUser   
+            };
+        }
+
+        public ContactDto CreateDto(Contact contact)
+        {
+            User contactUser = contact.ContactUser;
+            
+            return new ContactDto()
+            {
+                Guid = contact.Guid,
+                IsBlocked = contact.IsBlocked,
+                Contact = new UserDto()
+                {
+                    Email = contactUser.Email,
+                    Guid = contactUser.Guid,
+                    Nickname = contactUser.Nickname
+                }
             };
         }
     }

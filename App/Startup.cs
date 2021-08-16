@@ -1,6 +1,10 @@
 using System;
 using System.Linq;
+using System.Net;
+using System.Text.Json;
+using System.Threading.Tasks;
 using App.Auth;
+using App.Controllers;
 using App.Factories;
 using App.Services;
 using App.WebSockets;
@@ -9,10 +13,11 @@ using Infra.Cryptography;
 using Infra.Database;
 using Infra.Database.Model;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -86,15 +91,15 @@ namespace App
         {
             services.AddSingleton<IEncryptor, Encryptor>();
 
-            services.AddSingleton<IUnitOfWork>(services 
+            services.AddScoped<IUnitOfWork>(services 
                 => new EntityFrameworkUnitOfWork(this.Configuration, 
                     services.GetService<IEncryptor>()));
             
             services.AddSingleton<IResponseFactory, ResponseFactory>();
             services.AddSingleton<IUserFactory, UserFactory>();
             services.AddSingleton<IUserAccountFactory, UserAccountFactory>();
-            services.AddSingleton<IContactFactory, ContactFactory>();
-            services.AddSingleton<IContactInvitationFactory, ContactInvitationFactory>();
+            services.AddScoped<IContactFactory, ContactFactory>();
+            services.AddScoped<IContactInvitationFactory, ContactInvitationFactory>();
             services.AddSingleton<MsgContext>(); // do not use, only for .net internal uses
             services.AddSingleton<ITokenFactory, TokenFactory>();
             services.AddSingleton<ISendCommand, SignalRSendCommand>();
@@ -102,13 +107,13 @@ namespace App
             InjectMessageReader(services);
             InjectMessageWriter(services);
 
-            services.AddSingleton<IUserService>(services 
+            services.AddScoped<IUserService>(services 
                 => new UserService(
                     services.GetService<IUnitOfWork>(), 
                     new BCryptPasswordHashing(),
                     services.GetService<IUserAccountFactory>()));
             
-            services.AddSingleton<IContactService, ContactService>();
+            services.AddScoped<IContactService, ContactService>();
         }
 
         private void InjectMessageReader(IServiceCollection services)
@@ -175,7 +180,40 @@ namespace App
             ConfigureCors(app);
             app.UseAuthentication();
             app.UseAuthorization();
+            ConfigureRequestGlobalErrorHandler(app);
             ConfigureEndpoints(app);
+        }
+
+        private void ConfigureRequestGlobalErrorHandler(IApplicationBuilder app)
+        {
+            app.UseExceptionHandler(builder => 
+            {
+                builder.Run(async context => 
+                {
+                    Exception e = context.Features.Get<IExceptionHandlerPathFeature>()?.Error;
+
+                    switch (e)
+                    {
+                        case BadRequestException ex:
+                            await SetErrorResponseAsync(ex.Message, HttpStatusCode.BadRequest, context);
+                            break;
+                        case ForbiddenExcepion ex:
+                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                            break;
+                        default:
+                            const string Message = "Internal server error.";
+                            await SetErrorResponseAsync(Message, HttpStatusCode.InternalServerError, context);
+                            break;
+                    }
+                });
+            });
+        }
+
+        private async Task SetErrorResponseAsync(string message, HttpStatusCode statusCode, HttpContext context)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)statusCode;
+            await context.Response.WriteAsync(JsonSerializer.Serialize(new ResponseFactory().Create(message)));
         }
 
         private void ConfigureSwagger(IApplicationBuilder app)
