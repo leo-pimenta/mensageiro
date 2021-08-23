@@ -14,11 +14,19 @@ namespace App.Factories
             this.UserService = userService;
         }
 
-        public async Task<ContactInvitation> Create(ContactInvitationDto dto) => 
+        public async Task<ContactInvitation> Create(CreateContactInvitationDto dto) => 
             new ContactInvitation()
             {
                 User = await this.UserService.GetUserAsync(dto.UserGuid),
                 InvitedUser = await this.UserService.GetUserAsync(dto.ContactUserEmail)
+            };
+        
+        public ContactInvitationDto CreateDto(ContactInvitation invitation) =>
+            new ContactInvitationDto()
+            {
+                Guid = invitation.Guid,
+                UserGuid = invitation.UserGuid,
+                InvitedUserGuid = invitation.InvitedUserGuid
             };
     }
 }

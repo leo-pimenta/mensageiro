@@ -7,6 +7,7 @@ namespace App.Factories
 {
     public interface IContactInvitationFactory
     {
-        Task<ContactInvitation> Create(ContactInvitationDto dto);
+        Task<ContactInvitation> Create(CreateContactInvitationDto dto);
+        ContactInvitationDto CreateDto(ContactInvitation invitation);
     }
 }

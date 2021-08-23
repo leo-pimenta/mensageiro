@@ -32,7 +32,7 @@ namespace App.WebSockets
             ValidateUser(userTo);
 
             // TODO change SentAt to come from client?
-            this.MessageWriter.Insert(userFrom, userTo, text, DateTime.Now);
+            this.MessageWriter.Insert(userFrom, userTo, text, DateTime.UtcNow);
         }
 
         public void ValidateUser(User user)

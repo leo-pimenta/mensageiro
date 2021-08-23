@@ -11,10 +11,12 @@ namespace App.Services
     public class ContactService : IContactService
     {
         private readonly IUnitOfWork UnitOfWork;
+        private readonly IMessageWriter MessageWriter;
 
-        public ContactService(IUnitOfWork unitOfWork)
+        public ContactService(IUnitOfWork unitOfWork, IMessageWriter messageWriter)
         {
             this.UnitOfWork = unitOfWork;
+            this.MessageWriter = messageWriter;
         }
 
         public async Task RegisterInvitationAsync(ContactInvitation invitation)
@@ -22,7 +24,10 @@ namespace App.Services
             ValidateInvitationUsers(invitation);
 
             await this.UnitOfWork.ExecuteAsync(async context => 
-                await context.ContactInvitation.AddAsync(invitation));
+            {
+                await context.ContactInvitation.AddAsync(invitation);
+                this.MessageWriter.InsertContactInvitation(invitation, DateTime.UtcNow);
+            });
         }
 
         public async Task<ContactInvitation> GetInvitationAsync(Guid guid) => 
@@ -55,6 +60,14 @@ namespace App.Services
                     .Include(contact => contact.Block)
                     .Where(contact => contact.UserGuid == guid)
                     .ToListAsync());
+        
+        public async Task<IEnumerable<ContactInvitation>> GetAllInvitationsAsync(Guid invitedUserGuid) => 
+            await this.UnitOfWork.ExecuteAsync(async context => 
+                await context.ContactInvitation
+                    .Include(invitation => invitation.InvitedUser)
+                    .Include(invitation => invitation.User)
+                    .Where(invitation => invitation.InvitedUserGuid == invitedUserGuid)
+                    .ToListAsync());
 
         private void ValidateInvitationFound(ContactInvitation invitation)
         {
@@ -74,6 +87,6 @@ namespace App.Services
             {
                 throw new UserNotFoundException("User does not exist.");
             }    
-        }       
+        }
     }
 }

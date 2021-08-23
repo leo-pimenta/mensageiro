@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace App.Controllers
 {
     [ApiController]
-    [Route("/contact")]
+    [Route("/contacts")]
     [Authorize]
     public class ContactController : AppControllerBase
     {
@@ -37,7 +37,7 @@ namespace App.Controllers
         }
 
         [HttpPost("invitation")]
-        public async Task CreateInvitation(ContactInvitationDto dto)
+        public async Task CreateInvitation(CreateContactInvitationDto dto)
         {
             this.ValidateUser(dto.UserGuid.ToString());
             ContactInvitation invitation = await this.ContactInvitationFactory.Create(dto);
@@ -53,7 +53,7 @@ namespace App.Controllers
         }
 
         [HttpPost("invitation/accept")]
-        public async Task AcceptInvitation(ContactInvitationAcceptanceDto dto)
+        public async Task AcceptInvitation(ContactInvitationGuidDto dto)
         {
             try
             {
@@ -65,6 +65,16 @@ namespace App.Controllers
             {
                 throw new BadRequestException(e.Message, e);
             }
+        }
+
+        [HttpGet("invitations")]
+        public async Task<IActionResult> GetAllInvitations(ContactInvitationGuidDto dto)
+        {
+            IEnumerable<ContactInvitation> invitations = await this.ContactService
+                .GetAllInvitationsAsync(dto.InvitationGuid);
+            
+            IEnumerable<ContactInvitationDto> dtos = invitations.Select(this.ContactInvitationFactory.CreateDto);
+            return Ok(this.ResponseFactory.Create(new { invitations = dtos }));
         }
 
         [HttpGet]

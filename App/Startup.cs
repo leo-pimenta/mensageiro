@@ -135,7 +135,8 @@ namespace App
                 var kafkaReader = new KafkaReader(
                     consumer, 
                     provider.GetService<IUserService>(),
-                    provider.GetService<ISendCommand>());
+                    provider.GetService<ISendCommand>(),
+                    provider.GetService<IConfiguration>());
 
                 kafkaReader.Start();
                 return kafkaReader;

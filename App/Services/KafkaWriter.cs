@@ -13,6 +13,7 @@ namespace App.Services
         private readonly IProducer<Guid, string> Producer;
         private readonly IConfiguration Configuration;
         private readonly IUserService UserService;
+        private readonly TimeSpan FlushTimeout;
 
         public KafkaWriter(
             IAdminClient admin,
@@ -24,20 +25,41 @@ namespace App.Services
             this.Producer = producer;
             this.Configuration = configuration;
             this.UserService = userService;
+            this.FlushTimeout = TimeSpan.FromSeconds(10);
         }        
 
         public void Insert(User userFrom, User userTo, string text, DateTime sentAt)
         {
-            var message = new Message<Guid, string>()
+            Message<Guid, string> message = this.CreateMessage(text, userFrom.Guid, sentAt);
+            this.Produce($"msguser{userTo.Guid}", message);
+            Flush();
+        }
+
+        public void InsertContactInvitation(ContactInvitation invitation, DateTime sentAt)
+        {
+            string text = $"{invitation.User.Nickname}/{invitation.User.Email} has requests to add you as a contact.";
+            Message<Guid, string> message = this.CreateMessage(text, invitation.UserGuid, sentAt);
+            this.Produce($"msgcontactrequest{invitation.InvitedUserGuid}", message);
+            this.Flush();
+        }
+
+        private void Produce(string topic, Message<Guid, string> message)
+        {
+            this.Producer.Produce(topic, message, this.ProduceHandler);
+        }
+
+        private void Flush()
+        {
+            this.Producer.Flush(this.FlushTimeout);
+        }
+
+        private Message<Guid, string> CreateMessage(string text, Guid identifier, DateTime sentAt)
+            => new Message<Guid, string>()
             { 
                 Value = text,
-                Key = userFrom.Guid,
+                Key = identifier,
                 Timestamp = new Timestamp(sentAt)
             };
-
-            this.Producer.Produce($"msguser{userTo.Guid}", message, this.ProduceHandler);
-            this.Producer.Flush(TimeSpan.FromSeconds(10));
-        }
 
         private void ProduceHandler(DeliveryReport<Guid, string> report)
         {
@@ -67,6 +89,6 @@ namespace App.Services
             };
 
             this.Admin.CreateTopicsAsync(topicSpecifications);
-        }
+        }       
     }
 }

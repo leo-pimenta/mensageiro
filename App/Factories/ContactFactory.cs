@@ -14,7 +14,7 @@ namespace App.Factories
             this.UserService = userService;
         }
 
-        public async Task<Contact> CreateAsync(ContactInvitationDto dto)
+        public async Task<Contact> CreateAsync(CreateContactInvitationDto dto)
         {
             User user = await this.UserService.GetUserAsync(dto.UserGuid);
             User contactUser = await this.UserService.GetUserAsync(dto.ContactUserEmail);

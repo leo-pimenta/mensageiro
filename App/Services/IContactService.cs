@@ -10,6 +10,7 @@ namespace App.Services
         Task RegisterInvitationAsync(ContactInvitation invitation);
         Task AcceptInvitation(ContactInvitation invitation);
         Task<ContactInvitation> GetInvitationAsync(Guid guid);
+        Task<IEnumerable<ContactInvitation>> GetAllInvitationsAsync(Guid invitedUserGuid);
         Task<IList<Contact>> GetAllContacts(Guid guid);
     }
 }
