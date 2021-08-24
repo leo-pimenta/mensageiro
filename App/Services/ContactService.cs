@@ -49,8 +49,13 @@ namespace App.Services
                 };
 
                 await context.Contacts.AddRangeAsync(contacts);
-                var a = context.ContactInvitation.Remove(invitation);
+                context.ContactInvitation.Remove(invitation);
             });
+        }
+
+        public void RefuseInvitation(ContactInvitation invitation)
+        {
+            this.UnitOfWork.Execute(context => context.ContactInvitation.Remove(invitation));
         }
 
         public async Task<IList<Contact>> GetAllContacts(Guid guid) =>
@@ -87,6 +92,6 @@ namespace App.Services
             {
                 throw new UserNotFoundException("User does not exist.");
             }    
-        }
+        }       
     }
 }

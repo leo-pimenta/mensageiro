@@ -26,6 +26,8 @@ namespace App.Factories
             {
                 Guid = invitation.Guid,
                 UserGuid = invitation.UserGuid,
+                Email = invitation.User.Email,
+                Nickname = invitation.User.Nickname,
                 InvitedUserGuid = invitation.InvitedUserGuid
             };
     }

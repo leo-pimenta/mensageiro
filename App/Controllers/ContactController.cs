@@ -58,7 +58,7 @@ namespace App.Controllers
             try
             {
                 ContactInvitation invitation = await this.ContactService.GetInvitationAsync(dto.InvitationGuid);
-                this.ValidateUser(invitation.UserGuid.ToString());
+                this.ValidateUser(invitation.InvitedUserGuid.ToString());
                 await this.ContactService.AcceptInvitation(invitation);
             }
             catch (ContactInvitationNotFoundException e)
@@ -67,11 +67,28 @@ namespace App.Controllers
             }
         }
 
-        [HttpGet("invitations")]
-        public async Task<IActionResult> GetAllInvitations(ContactInvitationGuidDto dto)
+        [HttpPost("invitation/refuse")]
+        public async Task RefuseInvitation(ContactInvitationGuidDto dto)
         {
+            try
+            {
+                ContactInvitation invitation = await this.ContactService.GetInvitationAsync(dto.InvitationGuid);
+                this.ValidateUser(invitation.InvitedUserGuid.ToString());
+                this.ContactService.RefuseInvitation(invitation);
+            }
+            catch (ContactInvitationNotFoundException e)
+            {
+                throw new BadRequestException(e.Message, e);
+            }
+        }
+
+        [HttpGet("invitations")]
+        public async Task<IActionResult> GetAllInvitations()
+        {
+            Guid guid = new Guid(base.GetUserIdentifier());
+
             IEnumerable<ContactInvitation> invitations = await this.ContactService
-                .GetAllInvitationsAsync(dto.InvitationGuid);
+                .GetAllInvitationsAsync(guid);
             
             IEnumerable<ContactInvitationDto> dtos = invitations.Select(this.ContactInvitationFactory.CreateDto);
             return Ok(this.ResponseFactory.Create(new { invitations = dtos }));

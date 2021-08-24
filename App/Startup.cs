@@ -130,7 +130,7 @@ namespace App
                 .SetKeyDeserializer(new GuidDeserializer())
                 .Build();
             
-            services.AddSingleton<IMessageReader>(provider => 
+            services.AddScoped<IMessageReader>(provider => 
             {
                 var kafkaReader = new KafkaReader(
                     consumer, 
@@ -160,7 +160,7 @@ namespace App
                 })
                 .Build();
             
-            services.AddSingleton<IMessageWriter>(provider => 
+            services.AddScoped<IMessageWriter>(provider => 
                 new KafkaWriter(
                     admin,
                     producer, 

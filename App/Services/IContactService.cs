@@ -12,5 +12,6 @@ namespace App.Services
         Task<ContactInvitation> GetInvitationAsync(Guid guid);
         Task<IEnumerable<ContactInvitation>> GetAllInvitationsAsync(Guid invitedUserGuid);
         Task<IList<Contact>> GetAllContacts(Guid guid);
+        void RefuseInvitation(ContactInvitation invitation);
     }
 }

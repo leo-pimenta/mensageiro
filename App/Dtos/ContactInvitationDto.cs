@@ -13,5 +13,11 @@ namespace App.Dtos
 
         [JsonPropertyName("invitedUserGuid")]
         public Guid InvitedUserGuid { get; internal set; }
+        
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
+        
+        [JsonPropertyName("nickname")]
+        public string Nickname { get; set; }
     }
 }

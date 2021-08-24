@@ -32,7 +32,7 @@ namespace App.Services
         {
             Message<Guid, string> message = this.CreateMessage(text, userFrom.Guid, sentAt);
             this.Produce($"msguser{userTo.Guid}", message);
-            Flush();
+            //Flush();
         }
 
         public void InsertContactInvitation(ContactInvitation invitation, DateTime sentAt)
@@ -40,7 +40,7 @@ namespace App.Services
             string text = $"{invitation.User.Nickname}/{invitation.User.Email} has requests to add you as a contact.";
             Message<Guid, string> message = this.CreateMessage(text, invitation.UserGuid, sentAt);
             this.Produce($"msgcontactrequest{invitation.InvitedUserGuid}", message);
-            this.Flush();
+            //this.Flush();
         }
 
         private void Produce(string topic, Message<Guid, string> message)
@@ -48,6 +48,7 @@ namespace App.Services
             this.Producer.Produce(topic, message, this.ProduceHandler);
         }
 
+        // TODO must flush before closing application...
         private void Flush()
         {
             this.Producer.Flush(this.FlushTimeout);
