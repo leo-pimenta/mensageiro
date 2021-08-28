@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using App.Dtos;
 using App.Services;
@@ -14,9 +15,9 @@ namespace App.Factories
             this.UserService = userService;
         }
 
-        public async Task<Contact> CreateAsync(CreateContactInvitationDto dto)
+        public async Task<Contact> CreateAsync(CreateContactInvitationDto dto, Guid userGuid)
         {
-            User user = await this.UserService.GetUserAsync(dto.UserGuid);
+            User user = await this.UserService.GetUserAsync(userGuid);
             User contactUser = await this.UserService.GetUserAsync(dto.ContactUserEmail);
 
             return new Contact()

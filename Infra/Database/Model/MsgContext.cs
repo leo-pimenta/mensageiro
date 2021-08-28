@@ -75,14 +75,14 @@ namespace Infra.Database.Model
                 entity.HasKey(contact => contact.Guid);
                 
                 entity.HasOne(contact => contact.User)
-                    .WithOne()
-                    .HasForeignKey<Contact>(contact => contact.UserGuid)
+                    .WithMany()
+                    .HasForeignKey(contact => contact.UserGuid)
                     .HasConstraintName("userguid")
                     .IsRequired();
 
                 entity.HasOne(contact => contact.ContactUser)
-                    .WithOne()
-                    .HasForeignKey<Contact>(contact => contact.ContactUserGuid)
+                    .WithMany()
+                    .HasForeignKey(contact => contact.ContactUserGuid)
                     .HasConstraintName("contactuserguid")
                     .IsRequired();
 

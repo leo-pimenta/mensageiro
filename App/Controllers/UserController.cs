@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using App.Auth;
 using App.Dtos;
@@ -56,12 +57,24 @@ namespace App.Controllers
             }
 
             string token = this.TokenFactory.Create(user);
+            string refreshToken = this.TokenFactory.CreateRefreshToken(user);
             
             return Ok(this.ResponseFactory.Create(new 
             { 
                 nickName = user.Nickname,
-                accessToken = token 
+                accessToken = token,
+                refreshToken = refreshToken
             }));
+        }
+
+        [HttpGet("login/refresh")]
+        [Authorize("refreshPolicy")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            Guid guid = new Guid(this.GetUserIdentifier());
+            User user = await this.UserService.GetUserAsync(guid);
+            string token = this.TokenFactory.Create(user);
+            return Ok(this.ResponseFactory.Create(new { accessToken = token }));
         }
     }
 }

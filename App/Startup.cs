@@ -50,11 +50,30 @@ namespace App
             ConfigureValidationJsonResponse(services);
             services.AddCors();
             ConfigureAuthentication(services);
+            ConfigureAuthorization(services);
             services.AddControllers();
             services.AddSignalR();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "App", Version = "v1" });
+            });
+        }
+
+        private void ConfigureAuthorization(IServiceCollection services)
+        {
+            services.AddAuthorization(options => 
+            {
+                options.AddPolicy("accessPolicy", policy => 
+                {
+                    policy.RequireClaim("canAccess", "true");
+                });
+
+                options.AddPolicy("refreshPolicy", policy => 
+                {
+                    policy.RequireClaim("canRefresh", "true");
+                });
+
+                options.DefaultPolicy = options.GetPolicy("accessPolicy");
             });
         }
 

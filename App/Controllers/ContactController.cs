@@ -39,8 +39,8 @@ namespace App.Controllers
         [HttpPost("invitation")]
         public async Task CreateInvitation(CreateContactInvitationDto dto)
         {
-            this.ValidateUser(dto.UserGuid.ToString());
-            ContactInvitation invitation = await this.ContactInvitationFactory.Create(dto);
+            var userGuid = new Guid(this.GetUserIdentifier());
+            ContactInvitation invitation = await this.ContactInvitationFactory.Create(dto, userGuid);
             
             try
             {
