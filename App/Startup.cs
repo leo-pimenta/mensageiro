@@ -133,6 +133,7 @@ namespace App
                     services.GetService<IUserAccountFactory>()));
             
             services.AddScoped<IContactService, ContactService>();
+            services.AddScoped<IMessageService, MessageService>();
         }
 
         private void InjectMessageReader(IServiceCollection services)

@@ -16,6 +16,9 @@ namespace Infra.Database.Model
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<BlockInfo> Blocks { get; set; }
         public DbSet<ContactInvitation> ContactInvitation { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<ChatGroup> ChatGroups { get; set; }
+        public DbSet<UserGroupRelationship> UserGroupRelationships { get; set; }
 
         public MsgContext(IConfiguration configuration, IEncryptor encryptor)
         {
@@ -37,6 +40,43 @@ namespace Infra.Database.Model
             this.BuildBlock(builder);
             this.BuildContact(builder);
             this.BuildContactInvitation(builder);
+            this.buildChatGroups(builder);
+            this.BuildMessages(builder);
+        }
+
+        private void buildChatGroups(ModelBuilder builder)
+        {
+            builder.Entity<UserGroupRelationship>(entity => 
+            {
+                entity.HasKey(relationship => new { relationship.GroupId, relationship.UserId });
+                entity.HasIndex(relationship => relationship.GroupId);
+            });
+
+            builder.Entity<ChatGroup>(entity => 
+            {
+                entity.HasKey(group => group.Id);
+                entity.Property(group => group.Name).IsRequired(false);
+            });
+        }
+
+        private void BuildMessages(ModelBuilder builder)
+        {
+            builder.Entity<Message>(entity => 
+            {
+                entity.HasKey(message => message.Id);
+
+                entity.HasOne(message => message.Group)
+                    .WithMany()
+                    .HasForeignKey(message => message.GroupId)
+                    .HasConstraintName("groupid")
+                    .IsRequired();
+                
+                entity.HasOne(message => message.User)
+                    .WithMany()
+                    .HasForeignKey(message => message.UserId)
+                    .HasConstraintName("userid")
+                    .IsRequired();
+            });
         }
 
         private void BuildContactInvitation(ModelBuilder builder)
