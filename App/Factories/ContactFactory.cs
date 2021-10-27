@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Dtos;
 using App.Services;
@@ -19,13 +20,15 @@ namespace App.Factories
         {
             User user = await this.UserService.GetUserAsync(userGuid);
             User contactUser = await this.UserService.GetUserAsync(dto.ContactUserEmail);
-
-            return new Contact()
-            {
-                User = user,
-                ContactUser = contactUser   
-            };
+            return new Contact(Guid.NewGuid(), user, contactUser);
         }
+
+        public IEnumerable<Contact> Create(ContactInvitation invitation) => 
+            new List<Contact>()
+            {
+                new Contact(Guid.NewGuid(), invitation.User, invitation.InvitedUser),
+                new Contact(Guid.NewGuid(), invitation.InvitedUser, invitation.User)
+            };
 
         public ContactDto CreateDto(Contact contact)
         {

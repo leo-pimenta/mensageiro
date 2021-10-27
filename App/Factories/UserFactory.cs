@@ -6,12 +6,6 @@ namespace App.Factories
 {
     public class UserFactory : IUserFactory
     {
-        public User Create(CreateUserDto dto) 
-            => new User()
-            {
-                Email = dto.Email,
-                Guid = Guid.NewGuid(),
-                Nickname = dto.Nickname
-            };
+        public User Create(CreateUserDto dto) => new User(Guid.NewGuid(), dto.Email, dto.Nickname);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Factories;
 using Domain;
 using Infra.Database;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +13,13 @@ namespace App.Services
     {
         private readonly IUnitOfWork UnitOfWork;
         private readonly IMessageWriter MessageWriter;
+        private readonly IContactFactory ContactFactory;
 
-        public ContactService(IUnitOfWork unitOfWork, IMessageWriter messageWriter)
+        public ContactService(IUnitOfWork unitOfWork, IMessageWriter messageWriter, IContactFactory contactFactory)
         {
             this.UnitOfWork = unitOfWork;
             this.MessageWriter = messageWriter;
+            this.ContactFactory = contactFactory;
         }
 
         public async Task RegisterInvitationAsync(ContactInvitation invitation)
@@ -42,12 +45,7 @@ namespace App.Services
         {
             await this.UnitOfWork.ExecuteAsync(async context => 
             {
-                var contacts = new List<Contact>()
-                {
-                    new Contact() { UserGuid = invitation.UserGuid, ContactUserGuid = invitation.InvitedUserGuid },
-                    new Contact() { UserGuid = invitation.InvitedUserGuid, ContactUserGuid = invitation.UserGuid }
-                };
-
+                IEnumerable<Contact> contacts = this.ContactFactory.Create(invitation);
                 await context.Contacts.AddRangeAsync(contacts);
                 context.ContactInvitation.Remove(invitation);
             });

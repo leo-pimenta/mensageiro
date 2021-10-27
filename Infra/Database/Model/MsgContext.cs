@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Domain;
 using Infra.Cryptography;
 using Microsoft.EntityFrameworkCore;
@@ -34,15 +36,27 @@ namespace Infra.Database.Model
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            IEnumerable<User> users = GenerateTestUsers();
             builder.HasDefaultSchema("mensageiro");
-            this.BuildUser(builder);
-            this.BuildUserAccount(builder);
+            this.BuildMessages(builder);
+            this.BuildUser(builder, users);
+            this.BuildUserAccount(builder, users);
             this.BuildBlock(builder);
-            this.BuildContact(builder);
+            this.BuildContact(builder, users);
             this.BuildContactInvitation(builder);
             this.buildChatGroups(builder);
-            this.BuildMessages(builder);
         }
+
+        private IEnumerable<User> GenerateTestUsers() => 
+            new List<User>()
+            {
+                new User(new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), "joao.teste@teste.com", "João"),
+                new User(new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), "leo.teste@teste.com", "Leo"),
+                new User(new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"), "mariana.teste@teste.com", "Mariana"),
+                new User(new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"), "matheus.teste@teste.com", "Matheus"),
+                new User(new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"), "claudia.teste@teste.com", "Claudia"),
+                new User(new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"), "luisfelipe.teste@teste.com", "Luís Felipe"),
+            };
 
         private void buildChatGroups(ModelBuilder builder)
         {
@@ -108,7 +122,7 @@ namespace Infra.Database.Model
             });
         }
 
-        private void BuildContact(ModelBuilder builder)
+        private void BuildContact(ModelBuilder builder, IEnumerable<User> data)
         {
             builder.Entity<Contact>(entity => 
             {
@@ -131,20 +145,23 @@ namespace Infra.Database.Model
                     .HasForeignKey<Contact>(contact => contact.BlockGuid)
                     .HasConstraintName("blockguid")
                     .IsRequired(false);
+
+                entity.Insert(data);
             });
         }
 
-        private void BuildUserAccount(ModelBuilder builder)
+        private void BuildUserAccount(ModelBuilder builder, IEnumerable<User> data)
         {
             builder.Entity<UserAccount>(entity =>
             {
                 entity.HasKey(account => account.UserGuid);
                 entity.HasOne(account => account.User).WithOne().HasForeignKey<UserAccount>(account => account.UserGuid).IsRequired();
                 entity.Property(account => account.HashedPassword).IsRequired();
+                entity.Insert(data);
             });
         }
 
-        private void BuildUser(ModelBuilder builder)
+        private void BuildUser(ModelBuilder builder, IEnumerable<User> data)
         {
             builder.Entity<User>(entity => 
             {
@@ -152,6 +169,7 @@ namespace Infra.Database.Model
                 entity.HasIndex(user => user.Email).IsUnique();
                 entity.Property(user => user.Email).HasColumnName("email").IsRequired();
                 entity.Property(user => user.Nickname).IsRequired();
+                entity.Insert(data);
             });
         }
     }
