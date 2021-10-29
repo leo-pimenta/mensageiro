@@ -6,11 +6,11 @@ namespace App.Controllers
 {
     public class AppControllerBase : ControllerBase
     {
-        protected IUnitOfWork UnitOfWork { get; }
+        protected readonly IResponseFactory ResponseFactory;
 
-        public AppControllerBase(IUnitOfWork unitOfWork)
+        public AppControllerBase(IResponseFactory responseFactory)
         {
-            this.UnitOfWork = unitOfWork;
+            this.ResponseFactory = responseFactory;
         }
 
         protected string GetUserIdentifier()

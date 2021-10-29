@@ -71,7 +71,7 @@ namespace App.Auth
         private ClaimsIdentity CreateIdentityClaim(User user)
             => new ClaimsIdentity(new Claim[] 
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Guid.ToString()),                
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),                
         });
     }
 }

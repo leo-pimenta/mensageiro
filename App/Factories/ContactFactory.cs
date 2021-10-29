@@ -36,12 +36,12 @@ namespace App.Factories
             
             return new ContactDto()
             {
-                Guid = contact.Guid,
+                Guid = contact.Id,
                 IsBlocked = contact.IsBlocked,
                 Contact = new UserDto()
                 {
                     Email = contactUser.Email,
-                    Guid = contactUser.Guid,
+                    Guid = contactUser.Id,
                     Nickname = contactUser.Nickname
                 }
             };

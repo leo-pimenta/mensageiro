@@ -18,9 +18,9 @@ namespace Infra.Database
             
             builder.HasData(contacts.Select(contact => new 
             {
-                contact.Guid,
-                contact.UserGuid,
-                contact.ContactUserGuid
+                contact.Id,
+                contact.UserId,
+                contact.ContactUserId
             }));
 
             return builder;
@@ -35,7 +35,7 @@ namespace Infra.Database
 
             builder.HasData(userAccounts.Select(account => new 
             {
-                account.UserGuid,
+                account.UserId,
                 account.HashedPassword
             }));
 
@@ -46,7 +46,7 @@ namespace Infra.Database
         {
             builder.HasData(users.Select(user => new 
             {
-                user.Guid,
+                user.Id,
                 user.Email,
                 user.Nickname
             }));

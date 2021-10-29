@@ -25,11 +25,11 @@ namespace App.Factories
         public ContactInvitationDto CreateDto(ContactInvitation invitation) =>
             new ContactInvitationDto()
             {
-                Guid = invitation.Guid,
-                UserGuid = invitation.UserGuid,
+                Guid = invitation.Id,
+                UserGuid = invitation.UserId,
                 Email = invitation.User.Email,
                 Nickname = invitation.User.Nickname,
-                InvitedUserGuid = invitation.InvitedUserGuid
+                InvitedUserGuid = invitation.InvitedUserId
             };
     }
 }

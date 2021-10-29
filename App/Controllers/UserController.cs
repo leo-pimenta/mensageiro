@@ -18,22 +18,19 @@ namespace App.Controllers
     {
         private readonly IConfiguration Configuration;
         private readonly IUserFactory UserFactory;
-        private readonly IResponseFactory ResponseFactory;
         private readonly IUserService UserService;
         private readonly ITokenFactory TokenFactory;
 
         public UserController(
             IConfiguration configuration,
-            IUnitOfWork unitOfWork, 
             IResponseFactory responseFactory, 
             IUserFactory userFactory,
             IUserService userService,
             ITokenFactory tokenFactory)
-            : base(unitOfWork) 
+            : base(responseFactory) 
         {
             this.Configuration = configuration;
             this.UserFactory = userFactory;
-            this.ResponseFactory = responseFactory;
             this.UserService = userService;
             this.TokenFactory = tokenFactory;
         }

@@ -17,7 +17,7 @@ namespace Infra.Database.Model
         public DbSet<UserAccount> UserAccounts { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<BlockInfo> Blocks { get; set; }
-        public DbSet<ContactInvitation> ContactInvitation { get; set; }
+        public DbSet<ContactInvitation> ContactInvitations { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<ChatGroup> ChatGroups { get; set; }
         public DbSet<UserGroupRelationship> UserGroupRelationships { get; set; }
@@ -97,18 +97,18 @@ namespace Infra.Database.Model
         {
             builder.Entity<ContactInvitation>(entity => 
             {
-                entity.HasKey(invitation => invitation.Guid);
+                entity.HasKey(invitation => invitation.Id);
                 
                 entity.HasOne(invitation => invitation.InvitedUser)
                     .WithMany()
-                    .HasForeignKey(invitation => invitation.InvitedUserGuid)
-                    .HasConstraintName("inviteduserguid")
+                    .HasForeignKey(invitation => invitation.InvitedUserId)
+                    .HasConstraintName("inviteduserid")
                     .IsRequired();
 
                 entity.HasOne(invitation => invitation.User)
                     .WithMany()
-                    .HasForeignKey(invitation => invitation.UserGuid)
-                    .HasConstraintName("userguid")
+                    .HasForeignKey(invitation => invitation.UserId)
+                    .HasConstraintName("userid")
                     .IsRequired();
             });
         }
@@ -117,7 +117,7 @@ namespace Infra.Database.Model
         {
             builder.Entity<BlockInfo>(entity => 
             {
-                entity.HasKey(blockInfo => blockInfo.Guid);
+                entity.HasKey(blockInfo => blockInfo.Id);
                 entity.Property(blockInfo => blockInfo.Date).IsRequired();
             });
         }
@@ -126,24 +126,24 @@ namespace Infra.Database.Model
         {
             builder.Entity<Contact>(entity => 
             {
-                entity.HasKey(contact => contact.Guid);
+                entity.HasKey(contact => contact.Id);
                 
                 entity.HasOne(contact => contact.User)
                     .WithMany()
-                    .HasForeignKey(contact => contact.UserGuid)
-                    .HasConstraintName("userguid")
+                    .HasForeignKey(contact => contact.UserId)
+                    .HasConstraintName("userid")
                     .IsRequired();
 
                 entity.HasOne(contact => contact.ContactUser)
                     .WithMany()
-                    .HasForeignKey(contact => contact.ContactUserGuid)
-                    .HasConstraintName("contactuserguid")
+                    .HasForeignKey(contact => contact.ContactUserId)
+                    .HasConstraintName("contactuserid")
                     .IsRequired();
 
                 entity.HasOne(contact => contact.Block)
                     .WithOne()
-                    .HasForeignKey<Contact>(contact => contact.BlockGuid)
-                    .HasConstraintName("blockguid")
+                    .HasForeignKey<Contact>(contact => contact.BlockId)
+                    .HasConstraintName("blockid")
                     .IsRequired(false);
 
                 entity.Insert(data);
@@ -154,8 +154,8 @@ namespace Infra.Database.Model
         {
             builder.Entity<UserAccount>(entity =>
             {
-                entity.HasKey(account => account.UserGuid);
-                entity.HasOne(account => account.User).WithOne().HasForeignKey<UserAccount>(account => account.UserGuid).IsRequired();
+                entity.HasKey(account => account.UserId);
+                entity.HasOne(account => account.User).WithOne().HasForeignKey<UserAccount>(account => account.UserId).IsRequired();
                 entity.Property(account => account.HashedPassword).IsRequired();
                 entity.Insert(data);
             });
@@ -165,7 +165,7 @@ namespace Infra.Database.Model
         {
             builder.Entity<User>(entity => 
             {
-                entity.HasKey(user => user.Guid);
+                entity.HasKey(user => user.Id);
                 entity.HasIndex(user => user.Email).IsUnique();
                 entity.Property(user => user.Email).HasColumnName("email").IsRequired();
                 entity.Property(user => user.Nickname).IsRequired();

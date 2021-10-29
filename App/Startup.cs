@@ -9,9 +9,11 @@ using App.Factories;
 using App.Services;
 using App.WebSockets;
 using Confluent.Kafka;
+using Domain.Repositories;
 using Infra.Cryptography;
 using Infra.Database;
 using Infra.Database.Model;
+using Infra.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -109,14 +111,12 @@ namespace App
         private void InjectDependencies(IServiceCollection services)
         {
             services.AddSingleton<IEncryptor, Encryptor>();
-
-            services.AddScoped<IUnitOfWork>(services 
-                => new EntityFrameworkUnitOfWork(this.Configuration, 
-                    services.GetService<IEncryptor>()));
-            
+            services.AddSingleton<IPasswordHashing, BCryptPasswordHashing>();
             services.AddSingleton<IResponseFactory, ResponseFactory>();
+            InjectDatabaseDependencies(services);
             services.AddSingleton<IUserFactory, UserFactory>();
             services.AddSingleton<IUserAccountFactory, UserAccountFactory>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IContactFactory, ContactFactory>();
             services.AddScoped<IContactInvitationFactory, ContactInvitationFactory>();
             services.AddSingleton<MsgContext>(); // do not use, only for .net internal uses
@@ -125,15 +125,20 @@ namespace App
             
             InjectMessageReader(services);
             InjectMessageWriter(services);
-
-            services.AddScoped<IUserService>(services 
-                => new UserService(
-                    services.GetService<IUnitOfWork>(), 
-                    new BCryptPasswordHashing(),
-                    services.GetService<IUserAccountFactory>()));
             
             services.AddScoped<IContactService, ContactService>();
             services.AddScoped<IMessageService, MessageService>();
+        }
+
+        private void InjectDatabaseDependencies(IServiceCollection services)
+        {
+            services.AddScoped<MsgContext>();
+            services.AddScoped<IChatGroups, DbChatGroups>();
+            services.AddScoped<IContactInvitations, DbContactInvitations>();
+            services.AddScoped<IContacts, DbContacts>();
+            services.AddScoped<IMessages, DbMessages>();
+            services.AddScoped<IUsers, DbUsers>();
+            services.AddScoped<IUserAccounts, DbUserAccount>();
         }
 
         private void InjectMessageReader(IServiceCollection services)

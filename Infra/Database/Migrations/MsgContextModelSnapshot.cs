@@ -22,16 +22,16 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.BlockInfo", b =>
                 {
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("guid");
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("date");
 
-                    b.HasKey("Guid")
+                    b.HasKey("Id")
                         .HasName("pk_blocks");
 
                     b.ToTable("blocks");
@@ -56,246 +56,246 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Contact", b =>
                 {
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("guid");
+                        .HasColumnName("id");
 
-                    b.Property<Guid?>("BlockGuid")
+                    b.Property<Guid?>("BlockId")
                         .HasColumnType("uuid")
-                        .HasColumnName("blockguid");
+                        .HasColumnName("blockid");
 
-                    b.Property<Guid>("ContactUserGuid")
+                    b.Property<Guid>("ContactUserId")
                         .HasColumnType("uuid")
-                        .HasColumnName("contactuserguid");
+                        .HasColumnName("contactuserid");
 
-                    b.Property<Guid>("UserGuid")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
-                        .HasColumnName("userguid");
+                        .HasColumnName("userid");
 
-                    b.HasKey("Guid")
+                    b.HasKey("Id")
                         .HasName("pk_contacts");
 
-                    b.HasIndex("BlockGuid")
+                    b.HasIndex("BlockId")
                         .IsUnique()
-                        .HasDatabaseName("ix_contacts_blockguid");
+                        .HasDatabaseName("ix_contacts_blockid");
 
-                    b.HasIndex("ContactUserGuid")
-                        .HasDatabaseName("ix_contacts_contactuserguid");
+                    b.HasIndex("ContactUserId")
+                        .HasDatabaseName("ix_contacts_contactuserid");
 
-                    b.HasIndex("UserGuid")
-                        .HasDatabaseName("ix_contacts_userguid");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_contacts_userid");
 
                     b.ToTable("contacts");
 
                     b.HasData(
                         new
                         {
-                            Guid = new Guid("6ed47c78-6047-40cb-8d99-73c0213e74b1"),
-                            ContactUserGuid = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
-                            UserGuid = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                            Id = new Guid("2ee00791-0420-487c-8538-bf7d0812b035"),
+                            ContactUserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
+                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
                         },
                         new
                         {
-                            Guid = new Guid("f88f0d53-2999-43de-9fcb-a67d23858840"),
-                            ContactUserGuid = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
-                            UserGuid = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                            Id = new Guid("1c52e1cf-b1fb-4e18-ba64-6fee631b533d"),
+                            ContactUserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
+                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
                         },
                         new
                         {
-                            Guid = new Guid("3ea5a3b1-4d1e-4432-bec5-e0894762021b"),
-                            ContactUserGuid = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
-                            UserGuid = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                            Id = new Guid("0bcfbc8a-2291-4e21-82b7-62fd50abb2a4"),
+                            ContactUserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
+                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
                         },
                         new
                         {
-                            Guid = new Guid("507f93db-40f9-403e-aeda-79cb3c157e7f"),
-                            ContactUserGuid = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
-                            UserGuid = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                            Id = new Guid("59a7de72-46aa-4f99-9053-f77998e6b939"),
+                            ContactUserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
+                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
                         },
                         new
                         {
-                            Guid = new Guid("e0146d01-6ca6-47ab-b1b0-3388124957fc"),
-                            ContactUserGuid = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
-                            UserGuid = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                            Id = new Guid("984a42af-c6e0-414e-a073-f1e4d88aef43"),
+                            ContactUserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
+                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
                         },
                         new
                         {
-                            Guid = new Guid("787bd985-a7eb-477b-899d-2f5bfd1628dc"),
-                            ContactUserGuid = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
-                            UserGuid = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
+                            Id = new Guid("02b51f69-e653-44ab-9bc2-7317f317637c"),
+                            ContactUserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
+                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
                         },
                         new
                         {
-                            Guid = new Guid("a5e1a9e4-8756-4edc-9930-3a2ea6d4ba98"),
-                            ContactUserGuid = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
-                            UserGuid = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
+                            Id = new Guid("d9fb8ef8-a42d-49cf-8b70-88ec114128c2"),
+                            ContactUserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
+                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
                         },
                         new
                         {
-                            Guid = new Guid("7655b59b-33b0-48fd-8b30-5cffc16220ec"),
-                            ContactUserGuid = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
-                            UserGuid = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
+                            Id = new Guid("38fe32f1-1c20-4d91-a155-895e6f4f0971"),
+                            ContactUserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
+                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
                         },
                         new
                         {
-                            Guid = new Guid("cacddfe6-b38d-4fc4-9dea-7c07afe694e0"),
-                            ContactUserGuid = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
-                            UserGuid = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
+                            Id = new Guid("1382664e-aedf-49d5-bc1a-556bf74ad8d3"),
+                            ContactUserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
+                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
                         },
                         new
                         {
-                            Guid = new Guid("7352bbdc-6ec5-4ed9-81bc-27c2581fa644"),
-                            ContactUserGuid = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
-                            UserGuid = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
+                            Id = new Guid("e43ed8c0-cea1-434b-b0cc-42d532c57084"),
+                            ContactUserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
+                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
                         },
                         new
                         {
-                            Guid = new Guid("411bb938-2af9-45c1-815f-e8d8cc64f80f"),
-                            ContactUserGuid = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
-                            UserGuid = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
+                            Id = new Guid("db1d2c39-3b89-4fa9-a8c9-92d95ab4adee"),
+                            ContactUserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
+                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
                         },
                         new
                         {
-                            Guid = new Guid("ee0b3e2b-d497-4c2e-9cf4-a69b59462270"),
-                            ContactUserGuid = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
-                            UserGuid = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
+                            Id = new Guid("54f1be1a-8a48-43a9-b85b-18ece69b60cd"),
+                            ContactUserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
+                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
                         },
                         new
                         {
-                            Guid = new Guid("c0d8bdd2-27e5-48e2-bc9b-666340ae4eb1"),
-                            ContactUserGuid = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
-                            UserGuid = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
+                            Id = new Guid("bad9815f-7db6-4015-9ef6-c7715ebf32e3"),
+                            ContactUserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
+                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
                         },
                         new
                         {
-                            Guid = new Guid("7f6c20f6-caba-4cea-ac81-3d4ddee33fae"),
-                            ContactUserGuid = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
-                            UserGuid = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
+                            Id = new Guid("99c14afe-2136-464a-86d5-85f440095668"),
+                            ContactUserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
+                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
                         },
                         new
                         {
-                            Guid = new Guid("f2aebdd5-cb77-4e77-bbf9-1819faba1af3"),
-                            ContactUserGuid = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
-                            UserGuid = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
+                            Id = new Guid("55e0c157-e2f3-406a-b77a-e83ccd86e9d5"),
+                            ContactUserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
+                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
                         },
                         new
                         {
-                            Guid = new Guid("707b42ec-6cac-4d16-b70e-b278c7bc91c7"),
-                            ContactUserGuid = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
-                            UserGuid = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
+                            Id = new Guid("9553d96b-7bef-4cd6-84c1-10e5928d5341"),
+                            ContactUserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
+                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
                         },
                         new
                         {
-                            Guid = new Guid("8cd2dad0-b82e-4c6d-b3cf-d49727e69f91"),
-                            ContactUserGuid = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
-                            UserGuid = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
+                            Id = new Guid("9d058082-ea41-4765-8ed6-b4c1bcc64c70"),
+                            ContactUserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
+                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
                         },
                         new
                         {
-                            Guid = new Guid("bcf6c1c4-5ebe-44aa-bab8-6c7abde2a56e"),
-                            ContactUserGuid = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
-                            UserGuid = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
+                            Id = new Guid("bf1f415f-74cd-4498-a6f6-bb0c80e30c19"),
+                            ContactUserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
+                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
                         },
                         new
                         {
-                            Guid = new Guid("9c693843-ce4f-4d95-a67e-31d90070c167"),
-                            ContactUserGuid = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
-                            UserGuid = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
+                            Id = new Guid("5379b302-37eb-4e50-8bf1-141cf1036635"),
+                            ContactUserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
+                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
                         },
                         new
                         {
-                            Guid = new Guid("1ea6f2b8-b2f1-45be-aeda-ce17fd1bfd99"),
-                            ContactUserGuid = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
-                            UserGuid = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
+                            Id = new Guid("96fb00f2-151f-4202-b513-a2087049afba"),
+                            ContactUserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
+                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
                         },
                         new
                         {
-                            Guid = new Guid("0abd69fd-607e-4799-a949-649b934c9580"),
-                            ContactUserGuid = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
-                            UserGuid = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
+                            Id = new Guid("e5deb8f7-42ea-4ffa-aa25-9976775e1a4b"),
+                            ContactUserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
+                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
                         },
                         new
                         {
-                            Guid = new Guid("5a2e29e3-eb77-434d-855b-2ce871ac1e81"),
-                            ContactUserGuid = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
-                            UserGuid = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
+                            Id = new Guid("3854f03e-428b-4dc6-9f9b-91bbef773db9"),
+                            ContactUserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
+                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
                         },
                         new
                         {
-                            Guid = new Guid("b7b68cbc-dc6f-42d6-99bc-1d12448c3864"),
-                            ContactUserGuid = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
-                            UserGuid = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
+                            Id = new Guid("bfe245e5-23b3-47a4-bb8a-796eff1cd0fa"),
+                            ContactUserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
+                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
                         },
                         new
                         {
-                            Guid = new Guid("ac1c7692-c1fd-4d99-aa5a-ce21de22ad46"),
-                            ContactUserGuid = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
-                            UserGuid = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
+                            Id = new Guid("5d65e9f1-2e32-4955-b635-fde4c7515bcc"),
+                            ContactUserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
+                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
                         },
                         new
                         {
-                            Guid = new Guid("be80e0de-3b2e-4b66-84fd-c7f21bc9758c"),
-                            ContactUserGuid = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
-                            UserGuid = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
+                            Id = new Guid("c9ab6a0c-c70d-4bfb-91a9-47cbe7c2fded"),
+                            ContactUserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
+                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
                         },
                         new
                         {
-                            Guid = new Guid("7eeaafc4-fdf8-4ab6-9e07-2e936a400351"),
-                            ContactUserGuid = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
-                            UserGuid = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
+                            Id = new Guid("49726b60-5062-4de2-ba19-19470a9ac00a"),
+                            ContactUserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
+                            UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         },
                         new
                         {
-                            Guid = new Guid("180b54ed-86f5-4619-b5a9-553add5bea58"),
-                            ContactUserGuid = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
-                            UserGuid = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
+                            Id = new Guid("28e1a968-9d36-4f62-9485-2d20f1705564"),
+                            ContactUserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
+                            UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         },
                         new
                         {
-                            Guid = new Guid("929db624-8d41-4345-adba-d3049fc199ad"),
-                            ContactUserGuid = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
-                            UserGuid = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
+                            Id = new Guid("8414b7f9-ee5e-4bd3-91f7-47e5cff2c04a"),
+                            ContactUserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
+                            UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         },
                         new
                         {
-                            Guid = new Guid("edfdc02a-8b3d-435b-8d68-93cc83d72fc1"),
-                            ContactUserGuid = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
-                            UserGuid = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
+                            Id = new Guid("f49424f6-f6c1-4312-b1e2-05c1640655a9"),
+                            ContactUserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
+                            UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         },
                         new
                         {
-                            Guid = new Guid("4116e323-770d-4a3a-b8bf-c7668ce3b43e"),
-                            ContactUserGuid = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
-                            UserGuid = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
+                            Id = new Guid("07aa5961-2cf0-46d2-a20b-7080df89acb7"),
+                            ContactUserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
+                            UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         });
                 });
 
             modelBuilder.Entity("Domain.ContactInvitation", b =>
                 {
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("guid");
+                        .HasColumnName("id");
 
-                    b.Property<Guid>("InvitedUserGuid")
+                    b.Property<Guid>("InvitedUserId")
                         .HasColumnType("uuid")
-                        .HasColumnName("inviteduserguid");
+                        .HasColumnName("inviteduserid");
 
-                    b.Property<Guid>("UserGuid")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
-                        .HasColumnName("userguid");
+                        .HasColumnName("userid");
 
-                    b.HasKey("Guid")
-                        .HasName("pk_contactinvitation");
+                    b.HasKey("Id")
+                        .HasName("pk_contactinvitations");
 
-                    b.HasIndex("InvitedUserGuid")
-                        .HasDatabaseName("ix_contactinvitation_inviteduserguid");
+                    b.HasIndex("InvitedUserId")
+                        .HasDatabaseName("ix_contactinvitations_inviteduserid");
 
-                    b.HasIndex("UserGuid")
-                        .HasDatabaseName("ix_contactinvitation_userguid");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_contactinvitations_userid");
 
-                    b.ToTable("contactinvitation");
+                    b.ToTable("contactinvitations");
                 });
 
             modelBuilder.Entity("Domain.Message", b =>
@@ -335,10 +335,10 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.User", b =>
                 {
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("guid");
+                        .HasColumnName("id");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -350,7 +350,7 @@ namespace Infra.Migrations
                         .HasColumnType("text")
                         .HasColumnName("nickname");
 
-                    b.HasKey("Guid")
+                    b.HasKey("Id")
                         .HasName("pk_users");
 
                     b.HasIndex("Email")
@@ -362,37 +362,37 @@ namespace Infra.Migrations
                     b.HasData(
                         new
                         {
-                            Guid = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
+                            Id = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
                             Email = "joao.teste@teste.com",
                             Nickname = "João"
                         },
                         new
                         {
-                            Guid = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
+                            Id = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
                             Email = "leo.teste@teste.com",
                             Nickname = "Leo"
                         },
                         new
                         {
-                            Guid = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
+                            Id = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
                             Email = "mariana.teste@teste.com",
                             Nickname = "Mariana"
                         },
                         new
                         {
-                            Guid = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
+                            Id = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
                             Email = "matheus.teste@teste.com",
                             Nickname = "Matheus"
                         },
                         new
                         {
-                            Guid = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
+                            Id = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
                             Email = "claudia.teste@teste.com",
                             Nickname = "Claudia"
                         },
                         new
                         {
-                            Guid = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
+                            Id = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
                             Email = "luisfelipe.teste@teste.com",
                             Nickname = "Luís Felipe"
                         });
@@ -400,16 +400,16 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.UserAccount", b =>
                 {
-                    b.Property<Guid>("UserGuid")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
-                        .HasColumnName("userguid");
+                        .HasColumnName("userid");
 
                     b.Property<string>("HashedPassword")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("hashedpassword");
 
-                    b.HasKey("UserGuid")
+                    b.HasKey("UserId")
                         .HasName("pk_useraccounts");
 
                     b.ToTable("useraccounts");
@@ -417,33 +417,33 @@ namespace Infra.Migrations
                     b.HasData(
                         new
                         {
-                            UserGuid = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
-                            HashedPassword = "$2a$11$z5SbtX7GPNS5nFSY0bhWZ.P5pw35.MEAV3YUlmxejHXJBfndnEepu"
+                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
+                            HashedPassword = "$2a$11$aguYvvIy3CaQvgdVxGmCzOTrEG7T96gdGy/O0XAvHHTujDBcqUK9O"
                         },
                         new
                         {
-                            UserGuid = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
-                            HashedPassword = "$2a$11$hvSBox04vb3Z8B23PcV1q.oxhfzuIuJaXbI2L3X.Xcstgfi2u4oOa"
+                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
+                            HashedPassword = "$2a$11$uoYAwovQvV8Q3oXJvddd9.ZwoqRkhxjnDqCG7FVILMTGrTils85hK"
                         },
                         new
                         {
-                            UserGuid = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
-                            HashedPassword = "$2a$11$GTReISRdU5brf4lDhyKDfOKzopu3hivWeVzDS3f1.iihIPuS9qCvW"
+                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
+                            HashedPassword = "$2a$11$YffUtD7SLXP7zAcu35UnOOmS0cdgD2pOJ.oJLmK0DSRnHuxfji0Kq"
                         },
                         new
                         {
-                            UserGuid = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
-                            HashedPassword = "$2a$11$bCpQt3fslvmv1NZNRf0t5uWPc4litq5NkX8.8kLnFYLOJDIYWqWQW"
+                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
+                            HashedPassword = "$2a$11$vKuatSDBj4ksTG.dNlvRl.pwl0wIdSOsWUqZzG/3HtWVzasD4Xjt2"
                         },
                         new
                         {
-                            UserGuid = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
-                            HashedPassword = "$2a$11$oRtqCxm3EJTTPasfK2fmi.x0tnWO7WuinI5huob/M3Z67WBEF9ky6"
+                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
+                            HashedPassword = "$2a$11$oVh4UfF53vtQWyX544CqceHl9xuBElD/Wrr08z5HYOhYclnfcINky"
                         },
                         new
                         {
-                            UserGuid = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
-                            HashedPassword = "$2a$11$sZieAJ7i.Cz.sWvlhe1uZupFJWGvaBGQw0q.kRKvs3i.8q16AQwBS"
+                            UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
+                            HashedPassword = "$2a$11$yMaGo6IAgVsM2RzCo2gfS.LPBn9NBZLbFZgwFtmJAD1A1rw4j2586"
                         });
                 });
 
@@ -473,20 +473,20 @@ namespace Infra.Migrations
                 {
                     b.HasOne("Domain.BlockInfo", "Block")
                         .WithOne()
-                        .HasForeignKey("Domain.Contact", "BlockGuid")
-                        .HasConstraintName("blockguid");
+                        .HasForeignKey("Domain.Contact", "BlockId")
+                        .HasConstraintName("blockid");
 
                     b.HasOne("Domain.User", "ContactUser")
                         .WithMany()
-                        .HasForeignKey("ContactUserGuid")
-                        .HasConstraintName("contactuserguid")
+                        .HasForeignKey("ContactUserId")
+                        .HasConstraintName("contactuserid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserGuid")
-                        .HasConstraintName("userguid")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("userid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -501,15 +501,15 @@ namespace Infra.Migrations
                 {
                     b.HasOne("Domain.User", "InvitedUser")
                         .WithMany()
-                        .HasForeignKey("InvitedUserGuid")
-                        .HasConstraintName("inviteduserguid")
+                        .HasForeignKey("InvitedUserId")
+                        .HasConstraintName("inviteduserid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserGuid")
-                        .HasConstraintName("userguid")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("userid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -543,8 +543,8 @@ namespace Infra.Migrations
                 {
                     b.HasOne("Domain.User", "User")
                         .WithOne()
-                        .HasForeignKey("Domain.UserAccount", "UserGuid")
-                        .HasConstraintName("fk_useraccounts_users_userguid")
+                        .HasForeignKey("Domain.UserAccount", "UserId")
+                        .HasConstraintName("fk_useraccounts_users_userid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -6,7 +6,6 @@ using App.Dtos;
 using App.Factories;
 using App.Services;
 using Domain;
-using Infra.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,20 +16,17 @@ namespace App.Controllers
     [Authorize]
     public class ContactController : AppControllerBase
     {
-        private readonly IResponseFactory ResponseFactory;
         private readonly IContactService ContactService;
         private readonly IContactInvitationFactory ContactInvitationFactory;
         private readonly IContactFactory ContactFactory;
 
         public ContactController(
-            IUnitOfWork unitOfWork,
             IResponseFactory responseFactory,
             IContactService contactService,
             IContactInvitationFactory contactInvitationFactory,
             IContactFactory contactFactory)
-            : base(unitOfWork)
+            : base(responseFactory)
         {
-            this.ResponseFactory = responseFactory;
             this.ContactService = contactService;
             this.ContactInvitationFactory = contactInvitationFactory;
             this.ContactFactory = contactFactory;
@@ -41,7 +37,7 @@ namespace App.Controllers
         {
             var userGuid = new Guid(this.GetUserIdentifier());
             ContactInvitation invitation = await this.ContactInvitationFactory.Create(dto, userGuid);
-            
+
             try
             {
                 await this.ContactService.RegisterInvitationAsync(invitation);
@@ -58,7 +54,7 @@ namespace App.Controllers
             try
             {
                 ContactInvitation invitation = await this.ContactService.GetInvitationAsync(dto.InvitationGuid);
-                this.ValidateUser(invitation.InvitedUserGuid.ToString());
+                this.ValidateUser(invitation.InvitedUserId.ToString());
                 await this.ContactService.AcceptInvitation(invitation);
             }
             catch (ContactInvitationNotFoundException e)
@@ -73,8 +69,8 @@ namespace App.Controllers
             try
             {
                 ContactInvitation invitation = await this.ContactService.GetInvitationAsync(dto.InvitationGuid);
-                this.ValidateUser(invitation.InvitedUserGuid.ToString());
-                this.ContactService.RefuseInvitation(invitation);
+                this.ValidateUser(invitation.InvitedUserId.ToString());
+                await this.ContactService.RefuseInvitationAsync(invitation);
             }
             catch (ContactInvitationNotFoundException e)
             {
@@ -98,7 +94,7 @@ namespace App.Controllers
         public async Task<IActionResult> GetAll()
         {
             Guid userGuid = Guid.Parse(this.GetUserIdentifier());
-            IList<Contact> contacts = await this.ContactService.GetAllContacts(userGuid);
+            IList<Contact> contacts = await this.ContactService.GetAllContactsAsync(userGuid);
             IEnumerable<ContactDto> dtos = contacts.Select(c => this.ContactFactory.CreateDto(c));
             return Ok(this.ResponseFactory.Create(new { contacts = dtos }));
         }

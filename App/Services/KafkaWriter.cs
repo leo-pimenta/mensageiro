@@ -30,16 +30,16 @@ namespace App.Services
 
         public void Insert(User userFrom, User userTo, string text, DateTime sentAt)
         {
-            Message<Guid, string> message = this.CreateMessage(text, userFrom.Guid, sentAt);
-            this.Produce($"msguser{userTo.Guid}", message);
+            Message<Guid, string> message = this.CreateMessage(text, userFrom.Id, sentAt);
+            this.Produce($"msguser{userTo.Id}", message);
             //Flush();
         }
 
         public void InsertContactInvitation(ContactInvitation invitation, DateTime sentAt)
         {
             string text = $"{invitation.User.Nickname}/{invitation.User.Email} has requests to add you as a contact.";
-            Message<Guid, string> message = this.CreateMessage(text, invitation.UserGuid, sentAt);
-            this.Produce($"msgcontactrequest{invitation.InvitedUserGuid}", message);
+            Message<Guid, string> message = this.CreateMessage(text, invitation.UserId, sentAt);
+            this.Produce($"msgcontactrequest{invitation.InvitedUserId}", message);
             //this.Flush();
         }
 

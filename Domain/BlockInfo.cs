@@ -4,7 +4,7 @@ namespace Domain
 {
     public class BlockInfo
     {
-        public Guid Guid { get; set; }
+        public Guid Id { get; set; }
         public DateTime Date { get; set; }
     }
 }

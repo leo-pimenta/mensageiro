@@ -4,12 +4,12 @@ namespace Domain
 {
     public class ContactInvitation
     {
-        public Guid Guid { get; set; }
+        public Guid Id { get; set; }
         
-        public Guid UserGuid { get; set; }
+        public Guid UserId { get; set; }
         public User User { get; set; }
         
-        public Guid InvitedUserGuid { get; set; }
+        public Guid InvitedUserId { get; set; }
         public User InvitedUser { get; set; }
     }
 }

@@ -1,23 +1,30 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using App.Factories;
 using Domain;
-using Infra.Database;
+using Domain.Repositories;
+using Infra.Database.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Services
 {
-    public class ContactService : IContactService
+    public class ContactService : DbService, IContactService
     {
-        private readonly IUnitOfWork UnitOfWork;
+        private readonly IContacts Contacts;
+        private readonly IContactInvitations ContactInvitations;
         private readonly IMessageWriter MessageWriter;
         private readonly IContactFactory ContactFactory;
 
-        public ContactService(IUnitOfWork unitOfWork, IMessageWriter messageWriter, IContactFactory contactFactory)
+        public ContactService(
+            MsgContext context,
+            IContacts contacts, 
+            IContactInvitations contactInvitations,
+            IMessageWriter messageWriter, 
+            IContactFactory contactFactory) : base(context)
         {
-            this.UnitOfWork = unitOfWork;
+            this.Contacts = contacts;
+            this.ContactInvitations = contactInvitations;
             this.MessageWriter = messageWriter;
             this.ContactFactory = contactFactory;
         }
@@ -25,52 +32,36 @@ namespace App.Services
         public async Task RegisterInvitationAsync(ContactInvitation invitation)
         {
             ValidateInvitationUsers(invitation);
-
-            await this.UnitOfWork.ExecuteAsync(async context => 
-            {
-                await context.ContactInvitation.AddAsync(invitation);
-                this.MessageWriter.InsertContactInvitation(invitation, DateTime.UtcNow);
-            });
+            this.ContactInvitations.Add(invitation);
+            await base.SaveDbChangesAsync();
+            this.MessageWriter.InsertContactInvitation(invitation, DateTime.UtcNow);
         }
 
-        public async Task<ContactInvitation> GetInvitationAsync(Guid guid) => 
-            await this.UnitOfWork.ExecuteAsync(async context => 
-            {
-                ContactInvitation invitation = await context.ContactInvitation.FindAsync(guid);
-                ValidateInvitationFound(invitation);
-                return invitation;
-            });
+        public async Task<ContactInvitation> GetInvitationAsync(Guid guid)
+        {
+            ContactInvitation invitation = await this.ContactInvitations.GetEntityByIdAsync(guid);
+            ValidateInvitationFound(invitation);
+            return invitation;
+        }
 
         public async Task AcceptInvitation(ContactInvitation invitation)
         {
-            await this.UnitOfWork.ExecuteAsync(async context => 
-            {
-                IEnumerable<Contact> contacts = this.ContactFactory.Create(invitation);
-                await context.Contacts.AddRangeAsync(contacts);
-                context.ContactInvitation.Remove(invitation);
-            });
+            IEnumerable<Contact> contacts = this.ContactFactory.Create(invitation);
+            this.Contacts.AddRange(contacts);
+            this.ContactInvitations.Delete(invitation);
+            await this.SaveDbChangesAsync();
         }
 
-        public void RefuseInvitation(ContactInvitation invitation)
+        public async Task RefuseInvitationAsync(ContactInvitation invitation)
         {
-            this.UnitOfWork.Execute(context => context.ContactInvitation.Remove(invitation));
+            this.ContactInvitations.Delete(invitation);
+            await this.SaveDbChangesAsync();
         }
 
-        public async Task<IList<Contact>> GetAllContacts(Guid guid) =>
-            await this.UnitOfWork.ExecuteAsync(async context => 
-                await context.Contacts
-                    .Include(contact => contact.ContactUser)
-                    .Include(contact => contact.Block)
-                    .Where(contact => contact.UserGuid == guid)
-                    .ToListAsync());
+        public async Task<IList<Contact>> GetAllContactsAsync(Guid guid) => await this.Contacts.GetAllByUserId(guid).ToListAsync();
         
         public async Task<IEnumerable<ContactInvitation>> GetAllInvitationsAsync(Guid invitedUserGuid) => 
-            await this.UnitOfWork.ExecuteAsync(async context => 
-                await context.ContactInvitation
-                    .Include(invitation => invitation.InvitedUser)
-                    .Include(invitation => invitation.User)
-                    .Where(invitation => invitation.InvitedUserGuid == invitedUserGuid)
-                    .ToListAsync());
+            await this.ContactInvitations.GetAllByInvitedUserId(invitedUserGuid).ToListAsync();
 
         private void ValidateInvitationFound(ContactInvitation invitation)
         {

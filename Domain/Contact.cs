@@ -4,28 +4,28 @@ namespace Domain
 {
     public class Contact
     {
-        public Guid Guid { get; set; }
+        public Guid Id { get; set; }
         
-        public Guid UserGuid { get; set; }
+        public Guid UserId { get; set; }
         public User User { get; set; }
         
-        public Guid ContactUserGuid { get; set; }
+        public Guid ContactUserId { get; set; }
         public User ContactUser { get; set; }
         
-        public Guid? BlockGuid { get; set; }
+        public Guid? BlockId { get; set; }
         public BlockInfo Block { get; set; }
         
         public bool IsBlocked => this.Block != null;
 
         public Contact(Guid guid, User user, User contactUser, BlockInfo blockInfo = null)
         {
-            this.Guid = guid;
+            this.Id = guid;
             this.User = user;
-            this.UserGuid = user.Guid;
+            this.UserId = user.Id;
             this.ContactUser = contactUser;
-            this.ContactUserGuid = contactUser.Guid;
+            this.ContactUserId = contactUser.Id;
             this.Block = blockInfo;
-            this.BlockGuid = blockInfo?.Guid;
+            this.BlockId = blockInfo?.Id;
         }
 
         private Contact() {}

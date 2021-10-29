@@ -16,15 +16,12 @@ namespace App.Controllers
     public class MessageController : AppControllerBase
     {
         private readonly IMessageService MessageService;
-        private readonly IResponseFactory ResponseFactory;
 
         public MessageController(
-            IUnitOfWork unitOfWork, 
             IMessageService messageService,
-            IResponseFactory responseFactory) : base(unitOfWork) 
+            IResponseFactory responseFactory) : base(responseFactory) 
         {
             this.MessageService = messageService;
-            this.ResponseFactory = responseFactory;
         }
 
         [HttpGet]
