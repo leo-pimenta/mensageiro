@@ -13,6 +13,7 @@ namespace App.Services
     {
         private readonly IContacts Contacts;
         private readonly IContactInvitations ContactInvitations;
+        private readonly IChatGroups Groups;
         private readonly IMessageWriter MessageWriter;
         private readonly IContactFactory ContactFactory;
 
@@ -20,11 +21,13 @@ namespace App.Services
             MsgContext context,
             IContacts contacts, 
             IContactInvitations contactInvitations,
+            IChatGroups groups,
             IMessageWriter messageWriter, 
             IContactFactory contactFactory) : base(context)
         {
             this.Contacts = contacts;
             this.ContactInvitations = contactInvitations;
+            this.Groups = groups;
             this.MessageWriter = messageWriter;
             this.ContactFactory = contactFactory;
         }
@@ -44,11 +47,21 @@ namespace App.Services
             return invitation;
         }
 
-        public async Task AcceptInvitation(ContactInvitation invitation)
+        public async Task AcceptInvitationAsync(ContactInvitation invitation)
         {
             IEnumerable<Contact> contacts = this.ContactFactory.Create(invitation);
             this.Contacts.AddRange(contacts);
             this.ContactInvitations.Delete(invitation);
+            
+            // TODO refactor
+            var group = new ChatGroup(Guid.NewGuid());
+            var userRelationship = new UserGroupRelationship(invitation.User, group);
+            var contactUserRelationship = new UserGroupRelationship(invitation.InvitedUser, group);
+
+            this.Groups.Add(group);
+            this.Groups.AddRelationship(userRelationship);
+            this.Groups.AddRelationship(contactUserRelationship);
+
             await this.SaveDbChangesAsync();
         }
 

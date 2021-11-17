@@ -15,12 +15,12 @@ namespace App.Factories
             this.UserService = userService;
         }
 
-        public async Task<ContactInvitation> Create(CreateContactInvitationDto dto, Guid userGuid) => 
-            new ContactInvitation()
-            {
-                User = await this.UserService.GetUserAsync(userGuid),
-                InvitedUser = await this.UserService.GetUserAsync(dto.ContactUserEmail)
-            };
+        public async Task<ContactInvitation> Create(CreateContactInvitationDto dto, Guid userGuid) 
+        {
+            User user = await this.UserService.GetUserAsync(userGuid);
+            User invitedUser = await this.UserService.GetUserAsync(dto.ContactUserEmail);
+            return new ContactInvitation(Guid.NewGuid(), user, invitedUser);
+        }
         
         public ContactInvitationDto CreateDto(ContactInvitation invitation) =>
             new ContactInvitationDto()

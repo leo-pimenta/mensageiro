@@ -22,6 +22,8 @@ namespace Infra.Database.Model
         public DbSet<ChatGroup> ChatGroups { get; set; }
         public DbSet<UserGroupRelationship> UserGroupRelationships { get; set; }
 
+        public MsgContext() {}
+        
         public MsgContext(IConfiguration configuration, IEncryptor encryptor)
         {
             this.Configuration = configuration;
@@ -44,7 +46,7 @@ namespace Infra.Database.Model
             this.BuildBlock(builder);
             this.BuildContact(builder, users);
             this.BuildContactInvitation(builder);
-            this.buildChatGroups(builder);
+            this.buildChatGroups(builder, users);
         }
 
         private IEnumerable<User> GenerateTestUsers() => 
@@ -58,18 +60,35 @@ namespace Infra.Database.Model
                 new User(new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"), "luisfelipe.teste@teste.com", "Luís Felipe"),
             };
 
-        private void buildChatGroups(ModelBuilder builder)
+        private void buildChatGroups(ModelBuilder builder, IEnumerable<User> users)
         {
-            builder.Entity<UserGroupRelationship>(entity => 
-            {
-                entity.HasKey(relationship => new { relationship.GroupId, relationship.UserId });
-                entity.HasIndex(relationship => relationship.GroupId);
-            });
+            IEnumerable<UserGroupRelationship> relationships = this.CreateRelationships(users);
 
             builder.Entity<ChatGroup>(entity => 
             {
                 entity.HasKey(group => group.Id);
                 entity.Property(group => group.Name).IsRequired(false);
+                entity.Insert(relationships.Select(relationship => relationship.Group).Distinct());
+            });
+            
+            builder.Entity<UserGroupRelationship>(entity => 
+            {
+                entity.HasKey(relationship => new { relationship.GroupId, relationship.UserId });
+                entity.HasIndex(relationship => relationship.GroupId);
+                
+                entity.HasOne(relationship => relationship.Group)
+                    .WithMany()
+                    .HasForeignKey(relationship => relationship.GroupId)
+                    .HasConstraintName("groupid")
+                    .IsRequired();
+
+                entity.HasOne(relationship => relationship.User)
+                    .WithMany()
+                    .HasForeignKey(relationship => relationship.UserId)
+                    .HasConstraintName("userid")
+                    .IsRequired();
+
+                entity.Insert(relationships);
             });
         }
 
@@ -171,6 +190,34 @@ namespace Infra.Database.Model
                 entity.Property(user => user.Nickname).IsRequired();
                 entity.Insert(data);
             });
+        }
+
+        private IEnumerable<UserGroupRelationship> CreateRelationships(IEnumerable<User> users)
+        {
+            var internalUsers = new List<User>(users);
+            var relationships = new List<UserGroupRelationship>();
+
+            foreach (var user in users)
+            {
+                internalUsers.Remove(user);
+                
+                IEnumerable<UserGroupRelationship> createdRelationships = internalUsers
+                    .SelectMany(contactUsers => 
+                        CreateRelationships(user, contactUsers, new ChatGroup(Guid.NewGuid())));
+                
+                relationships.AddRange(createdRelationships);
+            }
+
+            return relationships;
+        }
+
+        private IEnumerable<UserGroupRelationship> CreateRelationships(User user, User contactUser, ChatGroup group)
+        {
+            return new List<UserGroupRelationship>()
+            {
+                new UserGroupRelationship(user, group),
+                new UserGroupRelationship(contactUser, group)
+            };
         }
     }
 }

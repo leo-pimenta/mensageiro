@@ -12,6 +12,11 @@ namespace Infra.Repositories
     {
         public DbChatGroups(MsgContext context) : base(context) {}
 
+        public void AddRelationship(UserGroupRelationship relationship)
+        {
+            this.Context.UserGroupRelationships.Add(relationship);
+        }
+
         public IQueryable<ChatGroup> GetAllByUserId(Guid userId) => 
             from relationship in base.Context.UserGroupRelationships
             join chatGroup in base.Context.Set<ChatGroup>() on relationship.GroupId equals chatGroup.Id

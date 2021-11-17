@@ -8,5 +8,6 @@ namespace Domain.Repositories
     {
         IQueryable<ChatGroup> GetAllByUserId(Guid userId);
         Task<UserGroupRelationship> GetGroupRelationshipAsync(Guid userId, Guid groupId);
+        void AddRelationship(UserGroupRelationship relationship);
     }
 }

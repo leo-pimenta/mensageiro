@@ -53,5 +53,25 @@ namespace Infra.Database
 
             return builder;
         }
+
+        public static EntityTypeBuilder<ChatGroup> Insert(this EntityTypeBuilder<ChatGroup> builder, 
+            IEnumerable<ChatGroup> groups)
+        {
+            builder.HasData(groups);
+            return builder;
+        }
+
+        public static EntityTypeBuilder<UserGroupRelationship> Insert(
+            this EntityTypeBuilder<UserGroupRelationship> builder,
+            IEnumerable<UserGroupRelationship> relationships)
+        {
+            builder.HasData(relationships.Select(relationship => new 
+            {  
+                GroupId = relationship.GroupId,
+                UserId = relationship.UserId
+            }));
+            
+            return builder;
+        }
     }
 }

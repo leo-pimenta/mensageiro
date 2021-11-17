@@ -55,7 +55,7 @@ namespace App.Controllers
             {
                 ContactInvitation invitation = await this.ContactService.GetInvitationAsync(dto.InvitationGuid);
                 this.ValidateUser(invitation.InvitedUserId.ToString());
-                await this.ContactService.AcceptInvitation(invitation);
+                await this.ContactService.AcceptInvitationAsync(invitation);
             }
             catch (ContactInvitationNotFoundException e)
             {
