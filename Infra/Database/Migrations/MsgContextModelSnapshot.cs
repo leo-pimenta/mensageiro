@@ -150,7 +150,6 @@ namespace Infra.Migrations
                         .HasDatabaseName("ix_contacts_contactuserid");
 
                     b.HasIndex("GroupId")
-                        .IsUnique()
                         .HasDatabaseName("ix_contacts_groupid");
 
                     b.HasIndex("UserId")
@@ -518,32 +517,32 @@ namespace Infra.Migrations
                         new
                         {
                             UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
-                            HashedPassword = "$2a$11$THjcJYGrYHnJPG1Alf45LuJrPb7FaD0DIzqHvFxFpLtGu2r3A2Uye"
+                            HashedPassword = "$2a$11$0/KIFBtYZyn5tJmAsb8ZQerC/WOBpfrX1YrM0l7SeOBUUGX/GKK0q"
                         },
                         new
                         {
                             UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
-                            HashedPassword = "$2a$11$Q2HYHdmUOXCrwDpiI52cv.ARAi6W5t8VnnLWd/0Iym9t7F5Ln.FQG"
+                            HashedPassword = "$2a$11$jP6g4oa9Ixf0kniemoAGfOcJWIV1YEYYgJ7g7R/9T5t4S8W2yJcpy"
                         },
                         new
                         {
                             UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
-                            HashedPassword = "$2a$11$Z7ackKoxmCcV/kUDlNKGE.hP1VzE.S9BP07pQti2F0CCywmxRM/iK"
+                            HashedPassword = "$2a$11$6e/1aqxZ0L9X9L81fwqVNuhuPPUi2jlqTvDwQIL5qayJYqJtsGnwS"
                         },
                         new
                         {
                             UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
-                            HashedPassword = "$2a$11$fDU26b/yg9wha5ycDB5xaevpo/gePK/hxZEWj1U0.VyIaes6aPclG"
+                            HashedPassword = "$2a$11$bmVxN1KVXvI7MgOHRDLjaOvL0uawngN3bYHGZOMHxxXGEttdZJ2aK"
                         },
                         new
                         {
                             UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
-                            HashedPassword = "$2a$11$6g5SQJ.uXTQITRnHyoidiO4q8TXaIlHxFk5P4zw0Y1Xr42ZKQWvXW"
+                            HashedPassword = "$2a$11$KibIK2dZ1J.RB39OzLCUSu8evdekURhwp9ipRqZ16szPd9Qum.xqu"
                         },
                         new
                         {
                             UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
-                            HashedPassword = "$2a$11$kCwbPSSCP.PFkBywyxvBjOfq5DSjOk338RwVL9TJ30os/8gk7StAO"
+                            HashedPassword = "$2a$11$ar/L63qFY8IgiHTuxoaE7uU7I58.XNd5xUPD17TzC3aC2Yi14KcFm"
                         });
                 });
 
@@ -736,8 +735,8 @@ namespace Infra.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.ChatGroup", "Group")
-                        .WithOne()
-                        .HasForeignKey("Domain.Contact", "GroupId")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
                         .HasConstraintName("groupid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

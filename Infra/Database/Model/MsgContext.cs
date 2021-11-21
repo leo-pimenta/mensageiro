@@ -153,8 +153,8 @@ namespace Infra.Database.Model
                     .IsRequired(false);
 
                 entity.HasOne(contact => contact.Group)
-                    .WithOne()
-                    .HasForeignKey<Contact>(contact => contact.GroupId)
+                    .WithMany()
+                    .HasForeignKey(contact => contact.GroupId)
                     .HasConstraintName("groupid")
                     .IsRequired();
 
