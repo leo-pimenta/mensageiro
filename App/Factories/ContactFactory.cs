@@ -16,19 +16,16 @@ namespace App.Factories
             this.UserService = userService;
         }
 
-        public async Task<Contact> CreateAsync(CreateContactInvitationDto dto, Guid userGuid)
+        public IEnumerable<Contact> Create(ContactInvitation invitation)
         {
-            User user = await this.UserService.GetUserAsync(userGuid);
-            User contactUser = await this.UserService.GetUserAsync(dto.ContactUserEmail);
-            return new Contact(Guid.NewGuid(), user, contactUser);
-        }
+            var group = new ChatGroup(Guid.NewGuid());
 
-        public IEnumerable<Contact> Create(ContactInvitation invitation) => 
-            new List<Contact>()
+            return new List<Contact>()
             {
-                new Contact(Guid.NewGuid(), invitation.User, invitation.InvitedUser),
-                new Contact(Guid.NewGuid(), invitation.InvitedUser, invitation.User)
+                new Contact(Guid.NewGuid(), invitation.User, invitation.InvitedUser, group),
+                new Contact(Guid.NewGuid(), invitation.InvitedUser, invitation.User, group)
             };
+        }
 
         public ContactDto CreateDto(Contact contact)
         {

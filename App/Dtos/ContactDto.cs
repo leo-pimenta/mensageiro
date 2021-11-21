@@ -13,5 +13,8 @@ namespace App.Dtos
 
         [JsonPropertyName("isBlocked")]
         public bool IsBlocked { get; set; }
+        
+        [JsonPropertyName("groupId")]
+        public Guid GroupId { get; set; }
     }
 }

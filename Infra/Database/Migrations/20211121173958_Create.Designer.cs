@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infra.Migrations
 {
     [DbContext(typeof(MsgContext))]
-    [Migration("20211117040409_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211121173958_Create")]
+    partial class Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -58,63 +58,63 @@ namespace Infra.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("bbbb7699-0314-4e71-a903-00e52a48f6c0")
+                            Id = new Guid("2b903f40-1f53-4c5b-beb3-b3cf5ac21ff3")
                         },
                         new
                         {
-                            Id = new Guid("bb54b14b-746c-4c33-b126-53daa1c9dcc2")
+                            Id = new Guid("998f3c13-78f1-42cb-977d-dfa121ae3609")
                         },
                         new
                         {
-                            Id = new Guid("860adda4-870d-4739-aa0d-e2964db4d407")
+                            Id = new Guid("04b8a481-221f-4bef-a5af-306204ced472")
                         },
                         new
                         {
-                            Id = new Guid("dd2b3ec1-0b44-4f69-a633-8961b9f8fdfc")
+                            Id = new Guid("649a3553-5da3-4ce8-ad49-c51714bef758")
                         },
                         new
                         {
-                            Id = new Guid("c210e1a1-3dc4-416a-852c-14df13d0e2b0")
+                            Id = new Guid("ffb2fe92-612f-41c2-b77c-b9027e430be1")
                         },
                         new
                         {
-                            Id = new Guid("04b053f0-7edc-4ee1-ab40-81a2ab4322e1")
+                            Id = new Guid("0d9bcff0-57ea-45ed-a566-3c829942e34b")
                         },
                         new
                         {
-                            Id = new Guid("64113c17-936b-41ac-ba47-b2f99dd6129e")
+                            Id = new Guid("167096b8-e066-46f0-a90e-446b540d331d")
                         },
                         new
                         {
-                            Id = new Guid("cb1b4669-bd41-4457-97fd-e6bcaf567f6e")
+                            Id = new Guid("169e4880-3d26-4e5b-a14c-c1e214d17370")
                         },
                         new
                         {
-                            Id = new Guid("53f34079-fcfa-4bca-a9b8-e32739e7e1a0")
+                            Id = new Guid("a125b75d-abce-42f6-b876-f18978312f4d")
                         },
                         new
                         {
-                            Id = new Guid("2f561e83-a3e0-4836-9980-e82ff6eed050")
+                            Id = new Guid("a498dcb0-3f6d-4f39-a354-9af1e18f3d9e")
                         },
                         new
                         {
-                            Id = new Guid("0f8dfb7b-a625-47d0-a18f-346207c3dc65")
+                            Id = new Guid("95bba9f6-c661-425f-9902-dcb08e00d949")
                         },
                         new
                         {
-                            Id = new Guid("859fe3f9-37c6-445d-9de1-0fda6857ffd7")
+                            Id = new Guid("9ed9e0da-4c7e-4071-82ea-7f3617abde35")
                         },
                         new
                         {
-                            Id = new Guid("142ace51-f749-4856-b758-f0d21064cf6c")
+                            Id = new Guid("7dc46b57-9f16-4857-9951-60b65e8d68ab")
                         },
                         new
                         {
-                            Id = new Guid("7ed7cb89-5460-47ea-bce8-8ba1e8403c0e")
+                            Id = new Guid("a5836c08-6aa5-4d85-8c18-af8019cdec9f")
                         },
                         new
                         {
-                            Id = new Guid("c46d1c1c-14f8-4816-86e8-49edbd1c7aac")
+                            Id = new Guid("8f525afe-0b26-4e29-8edb-ebaa62721a4e")
                         });
                 });
 
@@ -133,6 +133,10 @@ namespace Infra.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("contactuserid");
 
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("groupid");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
                         .HasColumnName("userid");
@@ -147,6 +151,10 @@ namespace Infra.Migrations
                     b.HasIndex("ContactUserId")
                         .HasDatabaseName("ix_contacts_contactuserid");
 
+                    b.HasIndex("GroupId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_contacts_groupid");
+
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_contacts_userid");
 
@@ -155,182 +163,212 @@ namespace Infra.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8e05dae1-c4a8-451b-99b0-c62fde342a07"),
+                            Id = new Guid("1b17a4dd-1979-4d0c-97fe-23ab21427c5e"),
                             ContactUserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
+                            GroupId = new Guid("2b903f40-1f53-4c5b-beb3-b3cf5ac21ff3"),
                             UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
                         },
                         new
                         {
-                            Id = new Guid("b552668f-d08d-4b82-8449-e9fd7b6402f6"),
+                            Id = new Guid("e2751d60-5186-4d62-9031-66db81bdc1a7"),
                             ContactUserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
+                            GroupId = new Guid("998f3c13-78f1-42cb-977d-dfa121ae3609"),
                             UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
                         },
                         new
                         {
-                            Id = new Guid("0b98c6c7-9240-4720-9c17-ffeeeb1d8cbd"),
+                            Id = new Guid("3947be5d-b018-45fa-9850-957e2ec079fa"),
                             ContactUserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
+                            GroupId = new Guid("04b8a481-221f-4bef-a5af-306204ced472"),
                             UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
                         },
                         new
                         {
-                            Id = new Guid("8b2e8c8b-d904-456e-beea-a3a3c9a5f393"),
+                            Id = new Guid("6705141b-072b-44b0-9712-fb1fde986346"),
                             ContactUserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
+                            GroupId = new Guid("649a3553-5da3-4ce8-ad49-c51714bef758"),
                             UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
                         },
                         new
                         {
-                            Id = new Guid("063a4fdc-5d12-43ca-a3ac-2682017ef9ef"),
+                            Id = new Guid("b313be69-5e66-4f93-bc56-b0661bc7dd15"),
                             ContactUserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
+                            GroupId = new Guid("ffb2fe92-612f-41c2-b77c-b9027e430be1"),
                             UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
                         },
                         new
                         {
-                            Id = new Guid("9db1fa19-2a5e-4a4b-9f16-c5a28aec103e"),
+                            Id = new Guid("3a7eadd1-c00c-470b-a18d-dfce31c28b01"),
                             ContactUserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
+                            GroupId = new Guid("2b903f40-1f53-4c5b-beb3-b3cf5ac21ff3"),
                             UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
                         },
                         new
                         {
-                            Id = new Guid("97abffd7-d6ea-4319-8f09-f0637667dccb"),
+                            Id = new Guid("c9966289-f5a5-4caa-80cc-0be3b812094a"),
                             ContactUserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
+                            GroupId = new Guid("0d9bcff0-57ea-45ed-a566-3c829942e34b"),
                             UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
                         },
                         new
                         {
-                            Id = new Guid("713553d9-1122-42da-ba77-c0cc70bdc046"),
+                            Id = new Guid("44b88124-4da1-4bf7-91f5-f04346b452ab"),
                             ContactUserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
+                            GroupId = new Guid("167096b8-e066-46f0-a90e-446b540d331d"),
                             UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
                         },
                         new
                         {
-                            Id = new Guid("7b7d3c1e-61bd-427c-b1d6-4bbcfe769337"),
+                            Id = new Guid("2bf78af2-7e55-44fb-9017-ecb77de24cb1"),
                             ContactUserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
+                            GroupId = new Guid("169e4880-3d26-4e5b-a14c-c1e214d17370"),
                             UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
                         },
                         new
                         {
-                            Id = new Guid("05677bbe-3dea-422e-be4f-785d1446131e"),
+                            Id = new Guid("6fd926de-c320-4834-b321-8ffef4807650"),
                             ContactUserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
+                            GroupId = new Guid("a125b75d-abce-42f6-b876-f18978312f4d"),
                             UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
                         },
                         new
                         {
-                            Id = new Guid("1af2a747-7d7d-47ad-9169-4e9d2e1e99f8"),
+                            Id = new Guid("e1f830b8-8974-44d4-b54b-8aa49ee03c5d"),
                             ContactUserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
+                            GroupId = new Guid("998f3c13-78f1-42cb-977d-dfa121ae3609"),
                             UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
                         },
                         new
                         {
-                            Id = new Guid("80bbbf6d-2258-4142-ad9d-fa59b5f7d70c"),
+                            Id = new Guid("71253f3e-484b-42ac-99f1-8348299b55ad"),
                             ContactUserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
+                            GroupId = new Guid("0d9bcff0-57ea-45ed-a566-3c829942e34b"),
                             UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
                         },
                         new
                         {
-                            Id = new Guid("13a4b026-386f-4466-b42a-b55b423b7bae"),
+                            Id = new Guid("c7704f7c-f51d-4160-9459-f75131532903"),
                             ContactUserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
+                            GroupId = new Guid("a498dcb0-3f6d-4f39-a354-9af1e18f3d9e"),
                             UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
                         },
                         new
                         {
-                            Id = new Guid("e7f7770e-5ba8-441f-b1a7-c407559d37c4"),
+                            Id = new Guid("b398b8c8-c896-4eb5-a05a-a7037c2a6d8b"),
                             ContactUserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
+                            GroupId = new Guid("95bba9f6-c661-425f-9902-dcb08e00d949"),
                             UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
                         },
                         new
                         {
-                            Id = new Guid("70fd25e5-116b-4c16-866b-36454de4c0a8"),
+                            Id = new Guid("14845c01-8314-4569-872c-e8abb474a067"),
                             ContactUserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
+                            GroupId = new Guid("9ed9e0da-4c7e-4071-82ea-7f3617abde35"),
                             UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
                         },
                         new
                         {
-                            Id = new Guid("3bf5e22f-68a5-4ea8-be44-e05d41965dfd"),
+                            Id = new Guid("4d017a0e-10fc-4445-9211-63f59fe58dfe"),
                             ContactUserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
+                            GroupId = new Guid("04b8a481-221f-4bef-a5af-306204ced472"),
                             UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
                         },
                         new
                         {
-                            Id = new Guid("6cb2b131-4165-4234-9d21-5a80d725fc44"),
+                            Id = new Guid("bd9e0c52-5ca1-4b6b-930d-b5b47992727b"),
                             ContactUserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
+                            GroupId = new Guid("167096b8-e066-46f0-a90e-446b540d331d"),
                             UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
                         },
                         new
                         {
-                            Id = new Guid("1be8839a-94f1-4a82-affd-c1024c4c41e1"),
+                            Id = new Guid("d674bd37-3f1c-4055-8e4f-265314ea729d"),
                             ContactUserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
+                            GroupId = new Guid("a498dcb0-3f6d-4f39-a354-9af1e18f3d9e"),
                             UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
                         },
                         new
                         {
-                            Id = new Guid("088a19cb-146a-49e7-bf0a-74170873a92f"),
+                            Id = new Guid("a6689f02-d9fa-4d29-8222-bc1c8278f740"),
                             ContactUserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
+                            GroupId = new Guid("7dc46b57-9f16-4857-9951-60b65e8d68ab"),
                             UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
                         },
                         new
                         {
-                            Id = new Guid("9ff79cb5-3e87-499a-abde-ca31d92038a0"),
+                            Id = new Guid("5b314bb3-3a91-4185-afef-08b161c2aef0"),
                             ContactUserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
+                            GroupId = new Guid("a5836c08-6aa5-4d85-8c18-af8019cdec9f"),
                             UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
                         },
                         new
                         {
-                            Id = new Guid("afdc515a-8f3a-4a49-b174-82d426dabd1b"),
+                            Id = new Guid("ea263365-2265-49f4-acb6-1f4627ca5abe"),
                             ContactUserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
+                            GroupId = new Guid("649a3553-5da3-4ce8-ad49-c51714bef758"),
                             UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
                         },
                         new
                         {
-                            Id = new Guid("c60c7299-bfb9-423a-8b6a-865ea1ca3b1a"),
+                            Id = new Guid("bdfb7c71-94f6-4eaf-b44a-2dfc9da95cb4"),
                             ContactUserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
+                            GroupId = new Guid("169e4880-3d26-4e5b-a14c-c1e214d17370"),
                             UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
                         },
                         new
                         {
-                            Id = new Guid("6dd7ae39-a322-4870-ad18-ea3657f96498"),
+                            Id = new Guid("2e463f58-a3b9-4c81-84da-8450f8a91467"),
                             ContactUserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
+                            GroupId = new Guid("95bba9f6-c661-425f-9902-dcb08e00d949"),
                             UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
                         },
                         new
                         {
-                            Id = new Guid("e26badd2-66c8-49a1-84ec-9d600d1f6ce2"),
+                            Id = new Guid("ae2f939b-8995-4e8c-8d84-ed59fd667d64"),
                             ContactUserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
+                            GroupId = new Guid("7dc46b57-9f16-4857-9951-60b65e8d68ab"),
                             UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
                         },
                         new
                         {
-                            Id = new Guid("bbf97855-f443-4419-8558-a6d0aeb57234"),
+                            Id = new Guid("ec87c7e3-6aab-4ac7-9c84-f408d7a38d6e"),
                             ContactUserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
+                            GroupId = new Guid("8f525afe-0b26-4e29-8edb-ebaa62721a4e"),
                             UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
                         },
                         new
                         {
-                            Id = new Guid("0055a6bb-c4e6-4c91-bdb4-bf62bd7ca07c"),
+                            Id = new Guid("6286f15f-9d90-428f-9670-b6dd13110a4b"),
                             ContactUserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
+                            GroupId = new Guid("ffb2fe92-612f-41c2-b77c-b9027e430be1"),
                             UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         },
                         new
                         {
-                            Id = new Guid("dbaa56c1-33fc-4f56-9ee7-29813168a060"),
+                            Id = new Guid("906d3ae8-c93b-4710-a33c-9ac946a47931"),
                             ContactUserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
+                            GroupId = new Guid("a125b75d-abce-42f6-b876-f18978312f4d"),
                             UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         },
                         new
                         {
-                            Id = new Guid("02b73b52-d9d9-484b-b581-276caaa1df5f"),
+                            Id = new Guid("5a12bb8f-6740-4c0d-86b8-4e8b1395234f"),
                             ContactUserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
+                            GroupId = new Guid("9ed9e0da-4c7e-4071-82ea-7f3617abde35"),
                             UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         },
                         new
                         {
-                            Id = new Guid("bc4e0fa5-ca82-470b-8911-aacd54a1319d"),
+                            Id = new Guid("c49b428f-1f4b-4870-b4e7-441052630305"),
                             ContactUserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
+                            GroupId = new Guid("a5836c08-6aa5-4d85-8c18-af8019cdec9f"),
                             UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         },
                         new
                         {
-                            Id = new Guid("6500b195-f35d-4266-b0e9-d09bf7a04800"),
+                            Id = new Guid("77d5673a-2b25-416a-854f-3c9fb537b914"),
                             ContactUserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
+                            GroupId = new Guid("8f525afe-0b26-4e29-8edb-ebaa62721a4e"),
                             UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         });
                 });
@@ -482,32 +520,32 @@ namespace Infra.Migrations
                         new
                         {
                             UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"),
-                            HashedPassword = "$2a$11$RvTc3V6tLGTwirz2XZ.9D.e.tX6a2O1MqiymlE2AGzbbpOl9anNvu"
+                            HashedPassword = "$2a$11$THjcJYGrYHnJPG1Alf45LuJrPb7FaD0DIzqHvFxFpLtGu2r3A2Uye"
                         },
                         new
                         {
                             UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"),
-                            HashedPassword = "$2a$11$9.6g62CHl1Pok6/H0cPZ5OxcirWrVtQhIofUHVnvRh2ULi8yrT8NS"
+                            HashedPassword = "$2a$11$Q2HYHdmUOXCrwDpiI52cv.ARAi6W5t8VnnLWd/0Iym9t7F5Ln.FQG"
                         },
                         new
                         {
                             UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"),
-                            HashedPassword = "$2a$11$X1TE8FnbVerII5JDD2AxcOLltPXVzrXmpm8vUA6TKA0iM6bDtPV36"
+                            HashedPassword = "$2a$11$Z7ackKoxmCcV/kUDlNKGE.hP1VzE.S9BP07pQti2F0CCywmxRM/iK"
                         },
                         new
                         {
                             UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"),
-                            HashedPassword = "$2a$11$18kCD.jB6926HA8sAf5hneFE9gjYruQgqz6MIcchuERzSSyOoiJ/O"
+                            HashedPassword = "$2a$11$fDU26b/yg9wha5ycDB5xaevpo/gePK/hxZEWj1U0.VyIaes6aPclG"
                         },
                         new
                         {
                             UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"),
-                            HashedPassword = "$2a$11$YJlG0Pqw.2/zGnd0TOaeb.X3zMW03v8jfYDcVfrSNCiiC2p5UN9mS"
+                            HashedPassword = "$2a$11$6g5SQJ.uXTQITRnHyoidiO4q8TXaIlHxFk5P4zw0Y1Xr42ZKQWvXW"
                         },
                         new
                         {
                             UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"),
-                            HashedPassword = "$2a$11$pHuHQo1iPA54pYxPSnZm3OR9.rbshJFb4/p7/m1KpH3pZ8j7la2Zq"
+                            HashedPassword = "$2a$11$kCwbPSSCP.PFkBywyxvBjOfq5DSjOk338RwVL9TJ30os/8gk7StAO"
                         });
                 });
 
@@ -535,152 +573,152 @@ namespace Infra.Migrations
                     b.HasData(
                         new
                         {
-                            GroupId = new Guid("bbbb7699-0314-4e71-a903-00e52a48f6c0"),
+                            GroupId = new Guid("2b903f40-1f53-4c5b-beb3-b3cf5ac21ff3"),
                             UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
                         },
                         new
                         {
-                            GroupId = new Guid("bbbb7699-0314-4e71-a903-00e52a48f6c0"),
+                            GroupId = new Guid("998f3c13-78f1-42cb-977d-dfa121ae3609"),
+                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("04b8a481-221f-4bef-a5af-306204ced472"),
+                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("649a3553-5da3-4ce8-ad49-c51714bef758"),
+                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("ffb2fe92-612f-41c2-b77c-b9027e430be1"),
+                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("2b903f40-1f53-4c5b-beb3-b3cf5ac21ff3"),
                             UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
                         },
                         new
                         {
-                            GroupId = new Guid("bb54b14b-746c-4c33-b126-53daa1c9dcc2"),
-                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                            GroupId = new Guid("0d9bcff0-57ea-45ed-a566-3c829942e34b"),
+                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
                         },
                         new
                         {
-                            GroupId = new Guid("bb54b14b-746c-4c33-b126-53daa1c9dcc2"),
+                            GroupId = new Guid("167096b8-e066-46f0-a90e-446b540d331d"),
+                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("169e4880-3d26-4e5b-a14c-c1e214d17370"),
+                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("a125b75d-abce-42f6-b876-f18978312f4d"),
+                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("998f3c13-78f1-42cb-977d-dfa121ae3609"),
                             UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
                         },
                         new
                         {
-                            GroupId = new Guid("860adda4-870d-4739-aa0d-e2964db4d407"),
-                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                            GroupId = new Guid("0d9bcff0-57ea-45ed-a566-3c829942e34b"),
+                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
                         },
                         new
                         {
-                            GroupId = new Guid("860adda4-870d-4739-aa0d-e2964db4d407"),
+                            GroupId = new Guid("a498dcb0-3f6d-4f39-a354-9af1e18f3d9e"),
+                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("95bba9f6-c661-425f-9902-dcb08e00d949"),
+                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("9ed9e0da-4c7e-4071-82ea-7f3617abde35"),
+                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("04b8a481-221f-4bef-a5af-306204ced472"),
                             UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
                         },
                         new
                         {
-                            GroupId = new Guid("dd2b3ec1-0b44-4f69-a633-8961b9f8fdfc"),
-                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                            GroupId = new Guid("167096b8-e066-46f0-a90e-446b540d331d"),
+                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
                         },
                         new
                         {
-                            GroupId = new Guid("dd2b3ec1-0b44-4f69-a633-8961b9f8fdfc"),
+                            GroupId = new Guid("a498dcb0-3f6d-4f39-a354-9af1e18f3d9e"),
+                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("7dc46b57-9f16-4857-9951-60b65e8d68ab"),
+                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("a5836c08-6aa5-4d85-8c18-af8019cdec9f"),
+                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("649a3553-5da3-4ce8-ad49-c51714bef758"),
                             UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
                         },
                         new
                         {
-                            GroupId = new Guid("c210e1a1-3dc4-416a-852c-14df13d0e2b0"),
-                            UserId = new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2")
+                            GroupId = new Guid("169e4880-3d26-4e5b-a14c-c1e214d17370"),
+                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
                         },
                         new
                         {
-                            GroupId = new Guid("c210e1a1-3dc4-416a-852c-14df13d0e2b0"),
+                            GroupId = new Guid("95bba9f6-c661-425f-9902-dcb08e00d949"),
+                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("7dc46b57-9f16-4857-9951-60b65e8d68ab"),
+                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("8f525afe-0b26-4e29-8edb-ebaa62721a4e"),
+                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
+                        },
+                        new
+                        {
+                            GroupId = new Guid("ffb2fe92-612f-41c2-b77c-b9027e430be1"),
                             UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         },
                         new
                         {
-                            GroupId = new Guid("04b053f0-7edc-4ee1-ab40-81a2ab4322e1"),
-                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("04b053f0-7edc-4ee1-ab40-81a2ab4322e1"),
-                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("64113c17-936b-41ac-ba47-b2f99dd6129e"),
-                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("64113c17-936b-41ac-ba47-b2f99dd6129e"),
-                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("cb1b4669-bd41-4457-97fd-e6bcaf567f6e"),
-                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("cb1b4669-bd41-4457-97fd-e6bcaf567f6e"),
-                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("53f34079-fcfa-4bca-a9b8-e32739e7e1a0"),
-                            UserId = new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("53f34079-fcfa-4bca-a9b8-e32739e7e1a0"),
+                            GroupId = new Guid("a125b75d-abce-42f6-b876-f18978312f4d"),
                             UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         },
                         new
                         {
-                            GroupId = new Guid("2f561e83-a3e0-4836-9980-e82ff6eed050"),
-                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("2f561e83-a3e0-4836-9980-e82ff6eed050"),
-                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("0f8dfb7b-a625-47d0-a18f-346207c3dc65"),
-                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("0f8dfb7b-a625-47d0-a18f-346207c3dc65"),
-                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("859fe3f9-37c6-445d-9de1-0fda6857ffd7"),
-                            UserId = new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("859fe3f9-37c6-445d-9de1-0fda6857ffd7"),
+                            GroupId = new Guid("9ed9e0da-4c7e-4071-82ea-7f3617abde35"),
                             UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         },
                         new
                         {
-                            GroupId = new Guid("142ace51-f749-4856-b758-f0d21064cf6c"),
-                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("142ace51-f749-4856-b758-f0d21064cf6c"),
-                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("7ed7cb89-5460-47ea-bce8-8ba1e8403c0e"),
-                            UserId = new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("7ed7cb89-5460-47ea-bce8-8ba1e8403c0e"),
+                            GroupId = new Guid("a5836c08-6aa5-4d85-8c18-af8019cdec9f"),
                             UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         },
                         new
                         {
-                            GroupId = new Guid("c46d1c1c-14f8-4816-86e8-49edbd1c7aac"),
-                            UserId = new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162")
-                        },
-                        new
-                        {
-                            GroupId = new Guid("c46d1c1c-14f8-4816-86e8-49edbd1c7aac"),
+                            GroupId = new Guid("8f525afe-0b26-4e29-8edb-ebaa62721a4e"),
                             UserId = new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51")
                         });
                 });
@@ -699,6 +737,13 @@ namespace Infra.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.ChatGroup", "Group")
+                        .WithOne()
+                        .HasForeignKey("Domain.Contact", "GroupId")
+                        .HasConstraintName("groupid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -709,6 +754,8 @@ namespace Infra.Migrations
                     b.Navigation("Block");
 
                     b.Navigation("ContactUser");
+
+                    b.Navigation("Group");
 
                     b.Navigation("User");
                 });

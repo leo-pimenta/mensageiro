@@ -8,7 +8,6 @@ namespace App.Factories
 {
     public interface IContactFactory
     {
-        Task<Contact> CreateAsync(CreateContactInvitationDto dto, Guid userGuid);
         IEnumerable<Contact> Create(ContactInvitation invitation);
         ContactDto CreateDto(Contact contact);
     }

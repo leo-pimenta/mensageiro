@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infra.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Create : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -86,7 +86,8 @@ namespace Infra.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     userid = table.Column<Guid>(type: "uuid", nullable: false),
                     contactuserid = table.Column<Guid>(type: "uuid", nullable: false),
-                    blockid = table.Column<Guid>(type: "uuid", nullable: true)
+                    blockid = table.Column<Guid>(type: "uuid", nullable: true),
+                    groupid = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -103,6 +104,13 @@ namespace Infra.Migrations
                         column: x => x.contactuserid,
                         principalSchema: "mensageiro",
                         principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "groupid",
+                        column: x => x.groupid,
+                        principalSchema: "mensageiro",
+                        principalTable: "chatgroups",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -197,21 +205,21 @@ namespace Infra.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { new Guid("bbbb7699-0314-4e71-a903-00e52a48f6c0"), null },
-                    { new Guid("c46d1c1c-14f8-4816-86e8-49edbd1c7aac"), null },
-                    { new Guid("7ed7cb89-5460-47ea-bce8-8ba1e8403c0e"), null },
-                    { new Guid("142ace51-f749-4856-b758-f0d21064cf6c"), null },
-                    { new Guid("859fe3f9-37c6-445d-9de1-0fda6857ffd7"), null },
-                    { new Guid("2f561e83-a3e0-4836-9980-e82ff6eed050"), null },
-                    { new Guid("53f34079-fcfa-4bca-a9b8-e32739e7e1a0"), null },
-                    { new Guid("0f8dfb7b-a625-47d0-a18f-346207c3dc65"), null },
-                    { new Guid("64113c17-936b-41ac-ba47-b2f99dd6129e"), null },
-                    { new Guid("04b053f0-7edc-4ee1-ab40-81a2ab4322e1"), null },
-                    { new Guid("c210e1a1-3dc4-416a-852c-14df13d0e2b0"), null },
-                    { new Guid("dd2b3ec1-0b44-4f69-a633-8961b9f8fdfc"), null },
-                    { new Guid("860adda4-870d-4739-aa0d-e2964db4d407"), null },
-                    { new Guid("bb54b14b-746c-4c33-b126-53daa1c9dcc2"), null },
-                    { new Guid("cb1b4669-bd41-4457-97fd-e6bcaf567f6e"), null }
+                    { new Guid("2b903f40-1f53-4c5b-beb3-b3cf5ac21ff3"), null },
+                    { new Guid("8f525afe-0b26-4e29-8edb-ebaa62721a4e"), null },
+                    { new Guid("a5836c08-6aa5-4d85-8c18-af8019cdec9f"), null },
+                    { new Guid("7dc46b57-9f16-4857-9951-60b65e8d68ab"), null },
+                    { new Guid("9ed9e0da-4c7e-4071-82ea-7f3617abde35"), null },
+                    { new Guid("a498dcb0-3f6d-4f39-a354-9af1e18f3d9e"), null },
+                    { new Guid("a125b75d-abce-42f6-b876-f18978312f4d"), null },
+                    { new Guid("95bba9f6-c661-425f-9902-dcb08e00d949"), null },
+                    { new Guid("167096b8-e066-46f0-a90e-446b540d331d"), null },
+                    { new Guid("0d9bcff0-57ea-45ed-a566-3c829942e34b"), null },
+                    { new Guid("ffb2fe92-612f-41c2-b77c-b9027e430be1"), null },
+                    { new Guid("649a3553-5da3-4ce8-ad49-c51714bef758"), null },
+                    { new Guid("04b8a481-221f-4bef-a5af-306204ced472"), null },
+                    { new Guid("998f3c13-78f1-42cb-977d-dfa121ae3609"), null },
+                    { new Guid("169e4880-3d26-4e5b-a14c-c1e214d17370"), null }
                 });
 
             migrationBuilder.InsertData(
@@ -231,39 +239,24 @@ namespace Infra.Migrations
             migrationBuilder.InsertData(
                 schema: "mensageiro",
                 table: "contacts",
-                columns: new[] { "id", "blockid", "contactuserid", "userid" },
+                columns: new[] { "id", "blockid", "contactuserid", "groupid", "userid" },
                 values: new object[,]
                 {
-                    { new Guid("05677bbe-3dea-422e-be4f-785d1446131e"), null, new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
-                    { new Guid("6dd7ae39-a322-4870-ad18-ea3657f96498"), null, new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
-                    { new Guid("063a4fdc-5d12-43ca-a3ac-2682017ef9ef"), null, new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
-                    { new Guid("0b98c6c7-9240-4720-9c17-ffeeeb1d8cbd"), null, new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
-                    { new Guid("713553d9-1122-42da-ba77-c0cc70bdc046"), null, new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
-                    { new Guid("13a4b026-386f-4466-b42a-b55b423b7bae"), null, new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
-                    { new Guid("3bf5e22f-68a5-4ea8-be44-e05d41965dfd"), null, new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
-                    { new Guid("70fd25e5-116b-4c16-866b-36454de4c0a8"), null, new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
-                    { new Guid("6cb2b131-4165-4234-9d21-5a80d725fc44"), null, new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
-                    { new Guid("8b2e8c8b-d904-456e-beea-a3a3c9a5f393"), null, new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
-                    { new Guid("7b7d3c1e-61bd-427c-b1d6-4bbcfe769337"), null, new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
-                    { new Guid("e7f7770e-5ba8-441f-b1a7-c407559d37c4"), null, new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
-                    { new Guid("088a19cb-146a-49e7-bf0a-74170873a92f"), null, new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
-                    { new Guid("afdc515a-8f3a-4a49-b174-82d426dabd1b"), null, new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
-                    { new Guid("c60c7299-bfb9-423a-8b6a-865ea1ca3b1a"), null, new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
-                    { new Guid("1be8839a-94f1-4a82-affd-c1024c4c41e1"), null, new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
-                    { new Guid("9ff79cb5-3e87-499a-abde-ca31d92038a0"), null, new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
-                    { new Guid("e26badd2-66c8-49a1-84ec-9d600d1f6ce2"), null, new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
-                    { new Guid("1af2a747-7d7d-47ad-9169-4e9d2e1e99f8"), null, new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
-                    { new Guid("97abffd7-d6ea-4319-8f09-f0637667dccb"), null, new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
-                    { new Guid("b552668f-d08d-4b82-8449-e9fd7b6402f6"), null, new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
-                    { new Guid("bbf97855-f443-4419-8558-a6d0aeb57234"), null, new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
-                    { new Guid("0055a6bb-c4e6-4c91-bdb4-bf62bd7ca07c"), null, new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
-                    { new Guid("dbaa56c1-33fc-4f56-9ee7-29813168a060"), null, new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
-                    { new Guid("02b73b52-d9d9-484b-b581-276caaa1df5f"), null, new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
-                    { new Guid("bc4e0fa5-ca82-470b-8911-aacd54a1319d"), null, new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
-                    { new Guid("6500b195-f35d-4266-b0e9-d09bf7a04800"), null, new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
-                    { new Guid("9db1fa19-2a5e-4a4b-9f16-c5a28aec103e"), null, new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
-                    { new Guid("80bbbf6d-2258-4142-ad9d-fa59b5f7d70c"), null, new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
-                    { new Guid("8e05dae1-c4a8-451b-99b0-c62fde342a07"), null, new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") }
+                    { new Guid("e1f830b8-8974-44d4-b54b-8aa49ee03c5d"), null, new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), new Guid("998f3c13-78f1-42cb-977d-dfa121ae3609"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
+                    { new Guid("ae2f939b-8995-4e8c-8d84-ed59fd667d64"), null, new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"), new Guid("7dc46b57-9f16-4857-9951-60b65e8d68ab"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
+                    { new Guid("ea263365-2265-49f4-acb6-1f4627ca5abe"), null, new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), new Guid("649a3553-5da3-4ce8-ad49-c51714bef758"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
+                    { new Guid("4d017a0e-10fc-4445-9211-63f59fe58dfe"), null, new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), new Guid("04b8a481-221f-4bef-a5af-306204ced472"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
+                    { new Guid("d674bd37-3f1c-4055-8e4f-265314ea729d"), null, new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"), new Guid("a498dcb0-3f6d-4f39-a354-9af1e18f3d9e"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
+                    { new Guid("bd9e0c52-5ca1-4b6b-930d-b5b47992727b"), null, new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), new Guid("167096b8-e066-46f0-a90e-446b540d331d"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
+                    { new Guid("2e463f58-a3b9-4c81-84da-8450f8a91467"), null, new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"), new Guid("95bba9f6-c661-425f-9902-dcb08e00d949"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
+                    { new Guid("71253f3e-484b-42ac-99f1-8348299b55ad"), null, new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), new Guid("0d9bcff0-57ea-45ed-a566-3c829942e34b"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
+                    { new Guid("906d3ae8-c93b-4710-a33c-9ac946a47931"), null, new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), new Guid("a125b75d-abce-42f6-b876-f18978312f4d"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
+                    { new Guid("5a12bb8f-6740-4c0d-86b8-4e8b1395234f"), null, new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"), new Guid("9ed9e0da-4c7e-4071-82ea-7f3617abde35"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
+                    { new Guid("bdfb7c71-94f6-4eaf-b44a-2dfc9da95cb4"), null, new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), new Guid("169e4880-3d26-4e5b-a14c-c1e214d17370"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
+                    { new Guid("77d5673a-2b25-416a-854f-3c9fb537b914"), null, new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"), new Guid("8f525afe-0b26-4e29-8edb-ebaa62721a4e"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
+                    { new Guid("3a7eadd1-c00c-470b-a18d-dfce31c28b01"), null, new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), new Guid("2b903f40-1f53-4c5b-beb3-b3cf5ac21ff3"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
+                    { new Guid("6286f15f-9d90-428f-9670-b6dd13110a4b"), null, new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), new Guid("ffb2fe92-612f-41c2-b77c-b9027e430be1"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
+                    { new Guid("c49b428f-1f4b-4870-b4e7-441052630305"), null, new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"), new Guid("a5836c08-6aa5-4d85-8c18-af8019cdec9f"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") }
                 });
 
             migrationBuilder.InsertData(
@@ -272,12 +265,12 @@ namespace Infra.Migrations
                 columns: new[] { "userid", "hashedpassword" },
                 values: new object[,]
                 {
-                    { new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"), "$2a$11$X1TE8FnbVerII5JDD2AxcOLltPXVzrXmpm8vUA6TKA0iM6bDtPV36" },
-                    { new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"), "$2a$11$pHuHQo1iPA54pYxPSnZm3OR9.rbshJFb4/p7/m1KpH3pZ8j7la2Zq" },
-                    { new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"), "$2a$11$YJlG0Pqw.2/zGnd0TOaeb.X3zMW03v8jfYDcVfrSNCiiC2p5UN9mS" },
-                    { new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"), "$2a$11$18kCD.jB6926HA8sAf5hneFE9gjYruQgqz6MIcchuERzSSyOoiJ/O" },
-                    { new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), "$2a$11$9.6g62CHl1Pok6/H0cPZ5OxcirWrVtQhIofUHVnvRh2ULi8yrT8NS" },
-                    { new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), "$2a$11$RvTc3V6tLGTwirz2XZ.9D.e.tX6a2O1MqiymlE2AGzbbpOl9anNvu" }
+                    { new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"), "$2a$11$fDU26b/yg9wha5ycDB5xaevpo/gePK/hxZEWj1U0.VyIaes6aPclG" },
+                    { new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"), "$2a$11$kCwbPSSCP.PFkBywyxvBjOfq5DSjOk338RwVL9TJ30os/8gk7StAO" },
+                    { new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"), "$2a$11$6g5SQJ.uXTQITRnHyoidiO4q8TXaIlHxFk5P4zw0Y1Xr42ZKQWvXW" },
+                    { new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), "$2a$11$THjcJYGrYHnJPG1Alf45LuJrPb7FaD0DIzqHvFxFpLtGu2r3A2Uye" },
+                    { new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"), "$2a$11$Z7ackKoxmCcV/kUDlNKGE.hP1VzE.S9BP07pQti2F0CCywmxRM/iK" },
+                    { new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), "$2a$11$Q2HYHdmUOXCrwDpiI52cv.ARAi6W5t8VnnLWd/0Iym9t7F5Ln.FQG" }
                 });
 
             migrationBuilder.InsertData(
@@ -286,36 +279,36 @@ namespace Infra.Migrations
                 columns: new[] { "groupid", "userid" },
                 values: new object[,]
                 {
-                    { new Guid("dd2b3ec1-0b44-4f69-a633-8961b9f8fdfc"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
-                    { new Guid("0f8dfb7b-a625-47d0-a18f-346207c3dc65"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
-                    { new Guid("142ace51-f749-4856-b758-f0d21064cf6c"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
-                    { new Guid("c46d1c1c-14f8-4816-86e8-49edbd1c7aac"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
-                    { new Guid("c210e1a1-3dc4-416a-852c-14df13d0e2b0"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
-                    { new Guid("53f34079-fcfa-4bca-a9b8-e32739e7e1a0"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
-                    { new Guid("859fe3f9-37c6-445d-9de1-0fda6857ffd7"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
-                    { new Guid("cb1b4669-bd41-4457-97fd-e6bcaf567f6e"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
-                    { new Guid("64113c17-936b-41ac-ba47-b2f99dd6129e"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
-                    { new Guid("142ace51-f749-4856-b758-f0d21064cf6c"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
-                    { new Guid("bbbb7699-0314-4e71-a903-00e52a48f6c0"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
-                    { new Guid("bb54b14b-746c-4c33-b126-53daa1c9dcc2"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
-                    { new Guid("860adda4-870d-4739-aa0d-e2964db4d407"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
-                    { new Guid("dd2b3ec1-0b44-4f69-a633-8961b9f8fdfc"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
-                    { new Guid("c210e1a1-3dc4-416a-852c-14df13d0e2b0"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
-                    { new Guid("bbbb7699-0314-4e71-a903-00e52a48f6c0"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
-                    { new Guid("04b053f0-7edc-4ee1-ab40-81a2ab4322e1"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
-                    { new Guid("64113c17-936b-41ac-ba47-b2f99dd6129e"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
-                    { new Guid("7ed7cb89-5460-47ea-bce8-8ba1e8403c0e"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
-                    { new Guid("cb1b4669-bd41-4457-97fd-e6bcaf567f6e"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
-                    { new Guid("bb54b14b-746c-4c33-b126-53daa1c9dcc2"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
-                    { new Guid("04b053f0-7edc-4ee1-ab40-81a2ab4322e1"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
-                    { new Guid("2f561e83-a3e0-4836-9980-e82ff6eed050"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
-                    { new Guid("0f8dfb7b-a625-47d0-a18f-346207c3dc65"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
-                    { new Guid("859fe3f9-37c6-445d-9de1-0fda6857ffd7"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
-                    { new Guid("860adda4-870d-4739-aa0d-e2964db4d407"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
-                    { new Guid("7ed7cb89-5460-47ea-bce8-8ba1e8403c0e"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
-                    { new Guid("2f561e83-a3e0-4836-9980-e82ff6eed050"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
-                    { new Guid("53f34079-fcfa-4bca-a9b8-e32739e7e1a0"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
-                    { new Guid("c46d1c1c-14f8-4816-86e8-49edbd1c7aac"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") }
+                    { new Guid("95bba9f6-c661-425f-9902-dcb08e00d949"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
+                    { new Guid("7dc46b57-9f16-4857-9951-60b65e8d68ab"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
+                    { new Guid("ffb2fe92-612f-41c2-b77c-b9027e430be1"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
+                    { new Guid("8f525afe-0b26-4e29-8edb-ebaa62721a4e"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
+                    { new Guid("a125b75d-abce-42f6-b876-f18978312f4d"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
+                    { new Guid("9ed9e0da-4c7e-4071-82ea-7f3617abde35"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
+                    { new Guid("169e4880-3d26-4e5b-a14c-c1e214d17370"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
+                    { new Guid("649a3553-5da3-4ce8-ad49-c51714bef758"), new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162") },
+                    { new Guid("04b8a481-221f-4bef-a5af-306204ced472"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
+                    { new Guid("7dc46b57-9f16-4857-9951-60b65e8d68ab"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
+                    { new Guid("2b903f40-1f53-4c5b-beb3-b3cf5ac21ff3"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
+                    { new Guid("998f3c13-78f1-42cb-977d-dfa121ae3609"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
+                    { new Guid("04b8a481-221f-4bef-a5af-306204ced472"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
+                    { new Guid("649a3553-5da3-4ce8-ad49-c51714bef758"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
+                    { new Guid("ffb2fe92-612f-41c2-b77c-b9027e430be1"), new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2") },
+                    { new Guid("2b903f40-1f53-4c5b-beb3-b3cf5ac21ff3"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
+                    { new Guid("0d9bcff0-57ea-45ed-a566-3c829942e34b"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
+                    { new Guid("167096b8-e066-46f0-a90e-446b540d331d"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
+                    { new Guid("a5836c08-6aa5-4d85-8c18-af8019cdec9f"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
+                    { new Guid("169e4880-3d26-4e5b-a14c-c1e214d17370"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
+                    { new Guid("998f3c13-78f1-42cb-977d-dfa121ae3609"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
+                    { new Guid("0d9bcff0-57ea-45ed-a566-3c829942e34b"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
+                    { new Guid("a498dcb0-3f6d-4f39-a354-9af1e18f3d9e"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
+                    { new Guid("95bba9f6-c661-425f-9902-dcb08e00d949"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
+                    { new Guid("9ed9e0da-4c7e-4071-82ea-7f3617abde35"), new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596") },
+                    { new Guid("a5836c08-6aa5-4d85-8c18-af8019cdec9f"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") },
+                    { new Guid("167096b8-e066-46f0-a90e-446b540d331d"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
+                    { new Guid("a498dcb0-3f6d-4f39-a354-9af1e18f3d9e"), new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5") },
+                    { new Guid("a125b75d-abce-42f6-b876-f18978312f4d"), new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d") },
+                    { new Guid("8f525afe-0b26-4e29-8edb-ebaa62721a4e"), new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51") }
                 });
 
             migrationBuilder.CreateIndex(
@@ -342,6 +335,13 @@ namespace Infra.Migrations
                 schema: "mensageiro",
                 table: "contacts",
                 column: "contactuserid");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_contacts_groupid",
+                schema: "mensageiro",
+                table: "contacts",
+                column: "groupid",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_contacts_userid",

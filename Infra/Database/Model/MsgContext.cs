@@ -38,37 +38,24 @@ namespace Infra.Database.Model
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            IEnumerable<User> users = GenerateTestUsers();
+            var seedData = new SeedData();
             builder.HasDefaultSchema("mensageiro");
             this.BuildMessages(builder);
-            this.BuildUser(builder, users);
-            this.BuildUserAccount(builder, users);
+            this.BuildUser(builder, seedData);
+            this.BuildUserAccount(builder, seedData);
             this.BuildBlock(builder);
-            this.BuildContact(builder, users);
+            this.BuildContact(builder, seedData);
             this.BuildContactInvitation(builder);
-            this.buildChatGroups(builder, users);
+            this.buildChatGroups(builder, seedData);
         }
 
-        private IEnumerable<User> GenerateTestUsers() => 
-            new List<User>()
-            {
-                new User(new Guid("d9f0c3e1-02f6-4ce5-bf74-b7c0f14cf2d2"), "joao.teste@teste.com", "João"),
-                new User(new Guid("8a4b6a86-a053-46ac-9ba6-04eacaf5bf7d"), "leo.teste@teste.com", "Leo"),
-                new User(new Guid("3fc9e8d0-9a65-459f-ade4-57fe754f7596"), "mariana.teste@teste.com", "Mariana"),
-                new User(new Guid("1e35ccb4-7d5a-4747-9cb0-62a875f44fd5"), "matheus.teste@teste.com", "Matheus"),
-                new User(new Guid("4faaf336-27d2-4680-a2ae-78ec6c0b4162"), "claudia.teste@teste.com", "Claudia"),
-                new User(new Guid("7b2601b8-0af4-43d3-9dda-f1db0cd7dd51"), "luisfelipe.teste@teste.com", "Luís Felipe"),
-            };
-
-        private void buildChatGroups(ModelBuilder builder, IEnumerable<User> users)
+        private void buildChatGroups(ModelBuilder builder, SeedData data)
         {
-            IEnumerable<UserGroupRelationship> relationships = this.CreateRelationships(users);
-
             builder.Entity<ChatGroup>(entity => 
             {
                 entity.HasKey(group => group.Id);
                 entity.Property(group => group.Name).IsRequired(false);
-                entity.Insert(relationships.Select(relationship => relationship.Group).Distinct());
+                entity.Insert(data);
             });
             
             builder.Entity<UserGroupRelationship>(entity => 
@@ -88,7 +75,7 @@ namespace Infra.Database.Model
                     .HasConstraintName("userid")
                     .IsRequired();
 
-                entity.Insert(relationships);
+                entity.Insert(data);
             });
         }
 
@@ -141,7 +128,7 @@ namespace Infra.Database.Model
             });
         }
 
-        private void BuildContact(ModelBuilder builder, IEnumerable<User> data)
+        private void BuildContact(ModelBuilder builder, SeedData data)
         {
             builder.Entity<Contact>(entity => 
             {
@@ -165,11 +152,17 @@ namespace Infra.Database.Model
                     .HasConstraintName("blockid")
                     .IsRequired(false);
 
+                entity.HasOne(contact => contact.Group)
+                    .WithOne()
+                    .HasForeignKey<Contact>(contact => contact.GroupId)
+                    .HasConstraintName("groupid")
+                    .IsRequired();
+
                 entity.Insert(data);
             });
         }
 
-        private void BuildUserAccount(ModelBuilder builder, IEnumerable<User> data)
+        private void BuildUserAccount(ModelBuilder builder, SeedData data)
         {
             builder.Entity<UserAccount>(entity =>
             {
@@ -180,7 +173,7 @@ namespace Infra.Database.Model
             });
         }
 
-        private void BuildUser(ModelBuilder builder, IEnumerable<User> data)
+        private void BuildUser(ModelBuilder builder, SeedData data)
         {
             builder.Entity<User>(entity => 
             {
@@ -190,34 +183,6 @@ namespace Infra.Database.Model
                 entity.Property(user => user.Nickname).IsRequired();
                 entity.Insert(data);
             });
-        }
-
-        private IEnumerable<UserGroupRelationship> CreateRelationships(IEnumerable<User> users)
-        {
-            var internalUsers = new List<User>(users);
-            var relationships = new List<UserGroupRelationship>();
-
-            foreach (var user in users)
-            {
-                internalUsers.Remove(user);
-                
-                IEnumerable<UserGroupRelationship> createdRelationships = internalUsers
-                    .SelectMany(contactUsers => 
-                        CreateRelationships(user, contactUsers, new ChatGroup(Guid.NewGuid())));
-                
-                relationships.AddRange(createdRelationships);
-            }
-
-            return relationships;
-        }
-
-        private IEnumerable<UserGroupRelationship> CreateRelationships(User user, User contactUser, ChatGroup group)
-        {
-            return new List<UserGroupRelationship>()
-            {
-                new UserGroupRelationship(user, group),
-                new UserGroupRelationship(contactUser, group)
-            };
         }
     }
 }

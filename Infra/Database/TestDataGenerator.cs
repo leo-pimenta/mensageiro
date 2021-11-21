@@ -1,74 +1,61 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Domain;
 using Infra.Cryptography;
-using Microsoft.EntityFrameworkCore;
+using Infra.Database.Model;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infra.Database
 {
     public static class TestDataGeneratorExtension
     {
-        public static EntityTypeBuilder<Contact> Insert(this EntityTypeBuilder<Contact> builder, IEnumerable<User> users)
+        public static EntityTypeBuilder<Contact> Insert(this EntityTypeBuilder<Contact> builder, SeedData data)
         {
-            IEnumerable<Contact> contacts = users.SelectMany(user => users
-                .Except(new List<User>() { user })
-                .Select(contactUser => new Contact(Guid.NewGuid(), user, contactUser)));
-            
-            builder.HasData(contacts.Select(contact => new 
+            builder.HasData(data.Contacts.Select(contact => new 
             {
                 contact.Id,
                 contact.UserId,
-                contact.ContactUserId
+                contact.ContactUserId,
+                contact.GroupId
             }));
 
             return builder;
         }
 
-        public static EntityTypeBuilder<UserAccount> Insert(this EntityTypeBuilder<UserAccount> builder, IEnumerable<User> users)
+        public static EntityTypeBuilder<UserAccount> Insert(this EntityTypeBuilder<UserAccount> builder, SeedData data)
         {
             var passwordHashing = new BCryptPasswordHashing();
             
-            IEnumerable<UserAccount> userAccounts = users
-                .Select(user => new UserAccount(user, passwordHashing.Generate("123")));
-
-            builder.HasData(userAccounts.Select(account => new 
+            builder.HasData(data.Users.Select(user => new 
             {
-                account.UserId,
-                account.HashedPassword
+                UserId = user.Id,
+                HashedPassword = passwordHashing.Generate("123")
             }));
 
             return builder;
         }
 
-        public static EntityTypeBuilder<User> Insert(this EntityTypeBuilder<User> builder, IEnumerable<User> users)
+        public static EntityTypeBuilder<User> Insert(this EntityTypeBuilder<User> builder, SeedData data)
         {
-            builder.HasData(users.Select(user => new 
-            {
-                user.Id,
-                user.Email,
-                user.Nickname
-            }));
-
+            builder.HasData(data.Users);
             return builder;
         }
 
         public static EntityTypeBuilder<ChatGroup> Insert(this EntityTypeBuilder<ChatGroup> builder, 
-            IEnumerable<ChatGroup> groups)
+            SeedData data)
         {
-            builder.HasData(groups);
+            builder.HasData(data.Contacts.Select(contact => contact.Group).Distinct());
             return builder;
         }
 
         public static EntityTypeBuilder<UserGroupRelationship> Insert(
             this EntityTypeBuilder<UserGroupRelationship> builder,
-            IEnumerable<UserGroupRelationship> relationships)
+            SeedData data)
         {
-            builder.HasData(relationships.Select(relationship => new 
+            builder.HasData(data.Contacts.Select(contact => new 
             {  
-                GroupId = relationship.GroupId,
-                UserId = relationship.UserId
+                GroupId = contact.GroupId,
+                UserId = contact.UserId
             }));
             
             return builder;

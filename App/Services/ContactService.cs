@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using App.Factories;
 using Domain;
@@ -53,8 +54,7 @@ namespace App.Services
             this.Contacts.AddRange(contacts);
             this.ContactInvitations.Delete(invitation);
             
-            // TODO refactor
-            var group = new ChatGroup(Guid.NewGuid());
+            var group = contacts.First().Group;
             var userRelationship = new UserGroupRelationship(invitation.User, group);
             var contactUserRelationship = new UserGroupRelationship(invitation.InvitedUser, group);
 
