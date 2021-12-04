@@ -95,7 +95,7 @@ namespace App.Controllers
         {
             Guid userGuid = Guid.Parse(this.GetUserIdentifier());
             IList<Contact> contacts = await this.ContactService.GetAllContactsAsync(userGuid);
-            IEnumerable<ContactDto> dtos = contacts.Select(c => this.ContactFactory.CreateDto(c));
+            IEnumerable<ContactDto> dtos = contacts.Select(this.ContactFactory.CreateDto);
             return Ok(this.ResponseFactory.Create(new { contacts = dtos }));
         }
     }

@@ -119,7 +119,6 @@ namespace App
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IContactFactory, ContactFactory>();
             services.AddScoped<IContactInvitationFactory, ContactInvitationFactory>();
-            services.AddSingleton<MsgContext>(); // do not use, only for .net internal uses
             services.AddSingleton<ITokenFactory, TokenFactory>();
             services.AddSingleton<ISendCommand, SignalRSendCommand>();
             

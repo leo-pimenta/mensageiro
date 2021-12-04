@@ -40,7 +40,8 @@ namespace App.Factories
                     Email = contactUser.Email,
                     Guid = contactUser.Id,
                     Nickname = contactUser.Nickname
-                }
+                },
+                GroupId = contact.GroupId
             };
         }
     }
