@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using Infra.Database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers
@@ -22,7 +21,7 @@ namespace App.Controllers
         {
             if (GetUserIdentifier() != expectedIdenfifier)
             {
-                throw new ForbiddenExcepion("The user tried to execute a forbidden action.");
+                throw new ForbiddenException("The user tried to execute a forbidden action.");
             }
         }
     }

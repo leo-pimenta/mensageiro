@@ -3,6 +3,7 @@ using System.Linq;
 using Domain;
 using Domain.Repositories;
 using Infra.Database.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositories
 {
@@ -14,11 +15,12 @@ namespace Infra.Repositories
         {
             IQueryable<Message> query = from message in base.Context.Messages
                 where message.GroupId == groupId
-                orderby message.Id
+                orderby message.SentAt
                 select message;
 
             return query
-                .Skip(page * pageSize)
+                .Include(message => message.User)
+                .Skip((page-1) * pageSize)
                 .Take(pageSize);
         }
     }

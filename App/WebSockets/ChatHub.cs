@@ -1,7 +1,6 @@
 using System;
-using System.Text.Json;
 using System.Threading.Tasks;
-using App.Proxies;
+using App.Controllers;
 using App.Services;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
@@ -15,24 +14,30 @@ namespace App.WebSockets
         private readonly IUserService UserService;
         private readonly IMessageWriter MessageWriter;
         private readonly IMessageReader MessageReader;
+        private readonly IMessageService MessageService;
 
-        public ChatHub(IUserService userService, IMessageWriter messageWriter, IMessageReader messageReader)
+        public ChatHub(IUserService userService, IMessageWriter messageWriter, IMessageReader messageReader,
+            IMessageService messageService)
         {
             this.UserService = userService;
             this.MessageWriter = messageWriter;
             this.MessageReader = messageReader;
+            this.MessageService = messageService;
         }        
 
-        public async Task Send(string toUserIdentifier, string text)
+        public async Task Send(string groupIdentifier, string text)
         {
-            User userFrom = await this.UserService.GetUserAsync(new Guid(this.Context.UserIdentifier));
-            ValidateUser(userFrom);
-
-            User userTo = await this.UserService.GetUserAsync(new Guid(toUserIdentifier));
-            ValidateUser(userTo);
-
-            // TODO change SentAt to come from client?
-            this.MessageWriter.Insert(userFrom, userTo, text, DateTime.UtcNow);
+            var groupId = new Guid(groupIdentifier);
+            var userId = new Guid(this.Context.UserIdentifier);
+            
+            try 
+            {
+                await this.MessageService.SendMessageAsync(groupId, userId, text, DateTime.UtcNow);
+            }
+            catch (UserNotInGroupException)
+            {
+                throw new ForbiddenException();
+            }
         }
 
         public void ValidateUser(User user)

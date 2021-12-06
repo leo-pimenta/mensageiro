@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using App.Dtos;
 using App.Services;
-using Domain;
-using Infra.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,11 +31,13 @@ namespace App.Controllers
             
             if (!await this.MessageService.IsUserInGroupAsync(userId, groupId))
             {
-                throw new ForbiddenExcepion();
+                throw new ForbiddenException();
             }
 
-            IEnumerable<Message> messages = await this.MessageService.GetMessagesAsync(groupId, page);
-            var dto = new ChatMessagesResponseDto(userId, groupId, messages, page);
+            IEnumerable<MessageDto> messageDtos = (await this.MessageService.GetMessagesAsync(groupId, page))
+                .Select(message => new MessageDto(message));
+
+            var dto = new ChatMessagesResponseDto(groupId, messageDtos, page);
             return Ok(this.ResponseFactory.Create(dto));
         }
 

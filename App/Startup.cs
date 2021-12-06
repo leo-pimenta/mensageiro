@@ -147,6 +147,7 @@ namespace App
                     BootstrapServers = this.Configuration["kafka:server"],
                     AutoOffsetReset = AutoOffsetReset.Earliest,
                     ClientId = this.Configuration["kafka:clientid"],
+                    AllowAutoCreateTopics = true,
                     
                     // TODO verify how to have many instances receiving data from same topics (different group id?)
                     GroupId = "mensageiro"
@@ -188,8 +189,7 @@ namespace App
                 new KafkaWriter(
                     admin,
                     producer, 
-                    provider.GetService<IConfiguration>(), 
-                    provider.GetService<IUserService>()));
+                    provider.GetService<IConfiguration>()));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -222,7 +222,7 @@ namespace App
                         case BadRequestException ex:
                             await SetErrorResponseAsync(ex.Message, HttpStatusCode.BadRequest, context);
                             break;
-                        case ForbiddenExcepion ex:
+                        case ForbiddenException ex:
                             context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                             break;
                         default:

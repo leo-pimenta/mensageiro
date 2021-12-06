@@ -58,6 +58,7 @@ namespace App.Controllers
             
             return Ok(this.ResponseFactory.Create(new 
             { 
+                id = user.Id,
                 nickName = user.Nickname,
                 accessToken = token,
                 refreshToken = refreshToken

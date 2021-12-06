@@ -12,27 +12,24 @@ namespace App.Services
         private readonly IAdminClient Admin;
         private readonly IProducer<Guid, string> Producer;
         private readonly IConfiguration Configuration;
-        private readonly IUserService UserService;
         private readonly TimeSpan FlushTimeout;
 
         public KafkaWriter(
             IAdminClient admin,
             IProducer<Guid, string> producer, 
-            IConfiguration configuration, 
-            IUserService userService)
+            IConfiguration configuration)
         {
             this.Admin = admin;
             this.Producer = producer;
             this.Configuration = configuration;
-            this.UserService = userService;
             this.FlushTimeout = TimeSpan.FromSeconds(10);
         }        
 
-        public void Insert(User userFrom, User userTo, string text, DateTime sentAt)
+        public void Insert(Guid userId, Guid groupId, string text, DateTime sentAt)
         {
-            Message<Guid, string> message = this.CreateMessage(text, userFrom.Id, sentAt);
-            this.Produce($"msguser{userTo.Id}", message);
-            //Flush();
+            Message<Guid, string> message = this.CreateMessage(text, userId, sentAt);
+            this.Produce($"msguser{groupId}", message);
+            // Flush();
         }
 
         public void InsertContactInvitation(ContactInvitation invitation, DateTime sentAt)

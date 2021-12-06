@@ -5,7 +5,7 @@ namespace App.Services
 {
     public interface IMessageWriter
     {
-        void Insert(User userFrom, User userTo, string message, DateTime sentAt);
+        void Insert(Guid userId, Guid groupId, string message, DateTime sentAt);
         void InsertContactInvitation(ContactInvitation invitation, DateTime sentAt);
     }
 }

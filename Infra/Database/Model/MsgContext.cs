@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Domain;
 using Infra.Cryptography;
 using Microsoft.EntityFrameworkCore;
@@ -96,6 +93,8 @@ namespace Infra.Database.Model
                     .HasForeignKey(message => message.UserId)
                     .HasConstraintName("userid")
                     .IsRequired();
+
+                entity.HasIndex(message => message.SentAt);
             });
         }
 

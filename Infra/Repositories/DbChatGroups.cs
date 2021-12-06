@@ -23,6 +23,9 @@ namespace Infra.Repositories
             where relationship.UserId == userId
             select chatGroup;
 
+        public async Task<ChatGroup> GetByIdAsync(Guid groupId) => 
+            await this.Context.ChatGroups.FindAsync(groupId);
+
         public async Task<UserGroupRelationship> GetGroupRelationshipAsync(Guid userId, Guid groupId) => 
             await this.Context.UserGroupRelationships.FindAsync(groupId, userId);
     }
